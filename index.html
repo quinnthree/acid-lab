@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0c1015">
-<title>Orbit / Acid Lab 3 — Evolving Sound Studio</title>
+<title>Orbit / Acid Lab 3.2 — Ambient Performance Studio</title>
 <style>
 :root{--bg:#0c1015;--surface:#151c24;--raised:#1b252e;--border:#2b3841;--text:#eef5ef;--muted:#8da39c;--gold:#eed390;--mint:#79d4b6;--coral:#fc906f;--blue:#8db8f7;--shadow:rgba(0,0,0,.25)}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% -20%,#23332f 0,transparent 50%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;letter-spacing:.005em}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
@@ -90,25 +90,57 @@ button { min-height:44px; }
 @media(max-width:860px){.evo-main{grid-template-columns:1fr}.evo-panel{padding:17px}.evo-pad{height:210px}}
 @media(max-width:420px){.evo-pad{height:180px}.evo-control{padding:10px}.evo-scenes{gap:6px}.evo-scene{padding:9px 11px;font-size:11px}.evo-panel{margin:13px 0;padding:14px}}
 
+
+/* Acid Lab 3.1: fixed transport, restrained variation, ambient-first layer controls */
+html{scroll-padding-bottom:135px} main{padding-bottom:160px}
+.performance-dock{position:fixed;z-index:120;bottom:max(12px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:min(850px,calc(100vw - 32px));margin:0;flex-direction:column;align-items:stretch;gap:7px;padding:10px 14px;border-color:#658d7e;background:#15231fee;box-shadow:0 12px 50px #000b;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.transport-keys{display:grid;grid-template-columns:1.15fr 1fr .77fr;gap:8px}.transport-keys button{min-width:0;width:100%;min-height:43px;padding:10px 6px;font-size:14px;white-space:nowrap}.clear-trigger{border-color:#665449;color:#f1c8b9;background:#342a25}
+.transport-detail{display:flex;align-items:center;justify-content:space-between;gap:12px}.transport-detail .bpm{flex:1;min-width:0}.transport-detail .bpm input{max-width:none;width:100%;min-width:45px}.transport-detail .bpm strong{font-size:17px}.transport-detail .bpm label{font-size:9px}.transport-detail .status{font-size:11px;margin:0;flex:0 0 auto}
+.clear-dialog{border:1px solid #679c88;border-radius:18px;background:#14221f;color:#e6f6ed;padding:23px;max-width:min(400px,calc(100% - 36px));width:100%;box-shadow:0 25px 100px #000b}.clear-dialog::backdrop{background:#040908aa;backdrop-filter:blur(4px)}.clear-dialog h2{margin:0 0 7px;font-size:22px}.clear-dialog p{color:#a7beb3;font-size:13px;line-height:1.6;margin:0 0 17px}.clear-options{display:grid;gap:8px}.clear-options button{min-height:48px;border:1px solid #516961;background:#283b34;color:#eff7eb;border-radius:10px;text-align:left;padding:12px;font-weight:650}.clear-options button#clearAll{border-color:#80594c;color:#ffcebc}.clear-options button.clear-cancel{background:transparent;text-align:center}
+.evo-layer-title{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:10px;color:#daeede;font-size:13px}.evo-layer-title span{color:#99b4a7;font-size:11px}
+.layer-balance{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:14px}.layer-control{min-width:0;background:#162821;border:1px solid #3c5d4c;border-radius:11px;padding:10px}.layer-control label{display:flex;justify-content:space-between;gap:4px;font-size:11px;color:#d5eadb}.layer-control label span{color:#9bd8bc}.layer-control input{width:100%;height:27px;margin:6px 0 0;touch-action:pan-x}
+.evo-calm{background:#1a2826;border:1px solid #48645a;border-radius:13px;padding:12px;margin-bottom:12px}.evo-calm label{display:flex;justify-content:space-between;gap:9px;align-items:center;font-size:12px;color:#c8e3d3}.evo-calm label span{color:#9adaae}.evo-calm input{width:100%;margin:10px 0 2px}.evo-calm small{color:#98b1a5;font-size:10px;line-height:1.5}
+.evo-more{border:1px solid #314c43;border-radius:12px;background:#121f20;padding:12px;margin:0 0 10px}.evo-more summary{cursor:pointer;color:#c0dbc9;list-style:none;font-size:12px;font-weight:750;touch-action:manipulation}.evo-more summary::-webkit-details-marker{display:none}.evo-more summary:before{content:'＋';display:inline-block;width:23px;color:#7bcfac}.evo-more[open] summary:before{content:'−'}.evo-more .evo-control-grid{margin-top:15px}.evo-extra-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.evo-extra-actions .evo-button{background:#20312b}.evo-control select{width:100%;margin:12px 0 6px;padding:9px;border:1px solid #3b5b4f;border-radius:8px;background:#203129;color:#d8f3e5;font:inherit;font-size:12px}
+@media(max-width:600px){main{padding-bottom:155px}.performance-dock{bottom:max(7px,env(safe-area-inset-bottom));width:calc(100vw - 18px);padding:9px;border-radius:15px}.transport-keys{gap:6px}.transport-keys button{font-size:12px;min-height:45px;padding:8px 3px}.transport-detail{gap:8px}.transport-detail .status{font-size:10px}.layer-balance{gap:5px}.layer-control{padding:8px 6px}.layer-control label{font-size:10px}.evo-settings .evo-switches{gap:6px}.evo-settings .evo-switches button{flex:1 1 42%;font-size:11px;padding:9px 5px}}
+@media(max-width:360px){.transport-detail .status #status{display:none}.performance-dock .transport-keys button{font-size:11px}.transport-keys{grid-template-columns:1fr 1fr .68fr}.layer-control label span{font-size:9px}}
+
+/* Acid Lab 3.2 — additive sound sources, no framework */
+.sonic-section{border:1px solid #4a625b;border-radius:20px;background:linear-gradient(140deg,#162728,#111920);padding:22px;margin:19px 0}
+.sonic-heading{display:flex;align-items:start;justify-content:space-between;gap:10px;flex-wrap:wrap}.sonic-heading h2{font-size:25px;margin:8px 0 5px}.sonic-heading p{color:#b4c9bd;font-size:12px;line-height:1.65;margin:0 0 16px;max-width:680px}
+.sonic-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.sonic-card{border:1px solid #36534e;border-radius:15px;background:#111e24;padding:16px;min-width:0}
+.sonic-card h3{font-size:16px;color:#d9eee6;margin:0 0 7px}.sonic-card p{font-size:11px;line-height:1.5;color:#93aaa2;min-height:36px;margin:0 0 12px}
+.sonic-card label{font-size:11px;color:#bddaca;display:flex;justify-content:space-between;margin:12px 0 6px;gap:8px}.sonic-card input[type=range]{width:100%;touch-action:pan-x}
+.sonic-card select,.sonic-card input[type=url],.sonic-card input[type=file]{background:#1a2b2d;color:#e3f4eb;border:1px solid #4d7066;padding:10px;border-radius:9px;width:100%;max-width:100%;font-size:12px}
+.sonic-card input[type=file]{font-size:11px}.sonic-btn{min-height:43px;background:#263e35;color:#e0f2e5;border:1px solid #55806c;border-radius:11px;padding:9px 12px;margin-top:10px;cursor:pointer;font-size:12px;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.sonic-card .muted{color:#9aafa5;font-size:10px;line-height:1.5;margin:9px 0 0;min-height:0}.sonic-feedback{margin-top:15px;border-top:1px solid #35524b;padding-top:13px;font-size:12px;color:#bad9cd}
+@media(max-width:870px){.sonic-grid{grid-template-columns:1fr}.sonic-card p{min-height:0}.sonic-section{padding:16px}}
 </style>
 </head>
 <body>
 <main>
-<header class="top"><div class="brand"><div class="brandicon">◎</div><div><div class="brand-name">Orbit / Acid</div><div class="brand-sub">Experimental sequencer</div></div></div><div class="topright"><span class="hint">WEB AUDIO · REAL-TIME SYNTHESIS</span><span class="flag">VERSION 3 · EVOLVING STUDIO</span></div></header>
-<h1>Shape the rhythm.<br><span>Hear the orbit.</span></h1>
-<p class="subtitle">Two bass orbits, four drum voices, and a generative performance engine. Shape living rhythms, warm harmonies, tape drift, and evolving textures as you play.</p>
-<section class="transport" aria-label="Playback controls">
-<button id="play" class="play" aria-label="Start sequencer">▶ Play</button>
-<button id="random" class="softbtn" aria-label="Randomize sequences">↝ Randomize</button>
-<button id="reset" class="softbtn" aria-label="Reset preset">↺ Reset</button>
-<div class="separate"></div>
-<div class="bpm"><div><label for="bpm">Tempo</label><div><strong id="bpmText">130</strong> <label>BPM</label></div></div><input id="bpm" type="range" min="55" max="200" value="130" aria-label="Tempo in beats per minute"></div>
-<div class="status"><span id="led" class="led"></span><span id="status">Ready to play</span></div>
+<header class="top"><div class="brand"><div class="brandicon">◎</div><div><div class="brand-name">Orbit / Acid</div><div class="brand-sub">Experimental sequencer</div></div></div><div class="topright"><span class="hint">WEB AUDIO · REAL-TIME SYNTHESIS</span><span class="flag">VERSION 3.2 · SONIC STUDIO</span></div></header>
+<h1>Make a memory.<br><span>Let it drift.</span></h1>
+<p class="subtitle">Keep the groove. Drift into tape-worn harmonies, distant melodies and patient atmosphere, then build deliberate beats over the top. Your patterns stay yours.</p>
+<section class="transport performance-dock" aria-label="Always available playback controls">
+  <div class="transport-keys">
+    <button id="play" class="play" type="button" aria-label="Start sequencer">▶ Play</button>
+    <button id="random" class="softbtn" type="button" aria-label="Randomize gently">↝ Randomize</button>
+    <button id="clear" class="softbtn clear-trigger" type="button" aria-haspopup="dialog" aria-controls="clearDialog">⌫ Clear</button>
+  </div>
+  <div class="transport-detail">
+    <div class="bpm"><div class="bpm-readout"><label for="bpm">TEMPO</label><div><strong id="bpmText">130</strong> <label>BPM</label></div></div><input id="bpm" type="range" min="55" max="200" value="130" aria-label="Tempo in beats per minute"></div>
+    <div class="status"><span id="led" class="led"></span><span id="status">Ready to play</span></div>
+  </div>
 </section>
+<dialog id="clearDialog" class="clear-dialog" aria-labelledby="clearTitle">
+  <h2 id="clearTitle">What would you like to clear?</h2>
+  <p>Clear the active pattern without deleting your saved projects.</p>
+  <div class="clear-options"><button type="button" id="clearDrums">Clear drums only</button><button type="button" id="clearBass">Clear bass orbits only</button><button type="button" id="clearAll">Clear all notes and drums</button><button type="button" id="clearCancel" class="clear-cancel">Cancel</button></div>
+</dialog>
 <div class="presets" role="group" aria-label="Style presets"><span class="preset-label">Sound experiments</span><button class="preset selected" data-preset="twin">01 · Twin 303s</button><button class="preset" data-preset="distorted">02 · Distorted Acid</button><button class="preset" data-preset="breaks">03 · Acid Breaks</button><button class="preset" data-preset="minimal">04 · Minimal Pulse</button></div>
 
 <section class="evo-panel" id="evolution" aria-label="Generative performance engine">
-  <div class="evo-hero"><div><div class="v2-kicker">06 / Evolution engine</div><h2>From loops to living music.</h2><p>Perform with controlled variation, evolving chords, tape character, rhythmic fills and a 16-bar arrangement. Every change follows the current groove instead of replacing it with noise.</p></div><span class="evo-pill" id="evoSceneStatus">Circuit · Evolving</span></div>
+  <div class="evo-hero"><div><div class="v2-kicker">06 / Atmosphere &amp; movement</div><h2>Build atmosphere. Anchor the beat.</h2><p>Scenes change the mood, not your notes. Blend distant harmonies, ghost melodies and worn-tape texture under beats you program yourself. Keep the groove steady or deliberately loosen it.</p></div><span class="evo-pill" id="evoSceneStatus">Circuit · Evolving</span></div>
   <div class="evo-scenes" role="group" aria-label="Performance scenes">
     <button type="button" class="evo-scene selected" data-scene="circuit">◉ Circuit</button>
     <button type="button" class="evo-scene" data-scene="fracture">✳ Fracture</button>
@@ -118,17 +150,29 @@ button { min-height:44px; }
   <div class="evo-main">
     <div class="evo-pad-wrap"><div class="evo-pad-title"><span>Performance pad</span><span id="evoXYReadout">24 / 28</span></div>
       <div id="evoPad" class="evo-pad" role="slider" aria-label="Performance pad. Left/right changes rhythmic mutation; up/down changes texture" aria-valuemin="0" aria-valuemax="100" aria-valuenow="24" tabindex="0"><div id="evoCursor" class="evo-cursor"></div></div>
-      <div class="evo-axis"><span>← Familiar groove</span><span>Unpredictable →</span></div><div class="evo-pad-bottom">Touch or drag: sideways changes rhythmic variation; upward adds atmosphere. Keyboard: arrow keys move the point.</div>
+      <div class="evo-axis"><span>← Familiar groove</span><span>More variation →</span></div><div class="evo-pad-bottom">Lower-left stays close to your loop. Move up for atmospheric movement; move right only when you want the rhythm to wander.</div>
     </div>
     <div class="evo-settings">
-      <div class="evo-switches"><button type="button" id="evoEnabled" class="evo-button" aria-pressed="true">◉ Evolution ON</button><button type="button" id="evoJourney" class="evo-button" aria-pressed="true">◈ Journey ON</button><button type="button" id="evoFreeze" class="evo-button" aria-pressed="false">❄ Freeze variation</button><button type="button" id="evoPhrase" class="evo-button">↝ New variation</button><button type="button" id="evoTap" class="evo-button">Tap tempo</button></div>
+      <div class="evo-layer-title"><strong>Live layer balance</strong><span>Mix ambience below your beats</span></div>
+      <div class="layer-balance">
+        <div class="layer-control"><label for="evoBass">Bass <span id="evoBassVal">75%</span></label><input type="range" id="evoBass" min="0" max="100" value="75"></div>
+        <div class="layer-control"><label for="evoBeat">Beats <span id="evoBeatVal">50%</span></label><input type="range" id="evoBeat" min="0" max="100" value="50"></div>
+        <div class="layer-control"><label for="evoPadLevel">Atmosphere <span id="evoPadLevelVal">75%</span></label><input type="range" id="evoPadLevel" min="0" max="100" value="75"></div>
+      </div>
+      <div class="evo-switches"><button type="button" id="evoBeatLock" class="evo-button" aria-pressed="true">● Keep beats steady</button><button type="button" id="evoEnabled" class="evo-button" aria-pressed="true">◉ Evolution ON</button><button type="button" id="evoJourney" class="evo-button" aria-pressed="false">◇ Journey OFF</button><button type="button" id="evoFreeze" class="evo-button" aria-pressed="false">❄ Freeze variation</button></div>
+      <div class="evo-calm"><label for="evoStructure"><strong>Musical restraint</strong><span id="evoStructureVal">85% · grounded</span></label><input type="range" id="evoStructure" min="0" max="100" value="85"><small>Higher keeps the bass recognizable and makes note changes less frequent. Works with the performance pad.</small></div>
+      <details class="evo-more"><summary>Fine tuning · tape, ghost notes, movement</summary>
       <div class="evo-control-grid">
         <div class="evo-control"><label for="evoSwing">Groove / swing <span id="evoSwingVal">12%</span></label><input type="range" id="evoSwing" min="0" max="70" value="12"><small>Push offbeat steps later</small></div>
         <div class="evo-control"><label for="evoDrift">Tempo drift <span id="evoDriftVal">1%</span></label><input type="range" id="evoDrift" min="0" max="100" value="1"><small>Slow ±4% tempo breathing</small></div>
-        <div class="evo-control"><label for="evoPadLevel">Chord atmosphere <span id="evoPadLevelVal">23%</span></label><input type="range" id="evoPadLevel" min="0" max="100" value="23"><small>Warm, slowly changing harmonies</small></div>
-        <div class="evo-control"><label for="evoSpace">Delay / space <span id="evoSpaceVal">16%</span></label><input type="range" id="evoSpace" min="0" max="100" value="16"><small>Echoes and subtle tape motion</small></div>
+        <div class="evo-control"><label for="evoGhost">Ghost melody <span id="evoGhostVal">25%</span></label><input type="range" id="evoGhost" min="0" max="100" value="25"><small>Sparse, distant notes over the chords</small></div>
+        <div class="evo-control"><label for="evoSpace">Echo / space <span id="evoSpaceVal">35%</span></label><input type="range" id="evoSpace" min="0" max="100" value="35"><small>Soft, tempo-linked echoes</small></div>
+        <div class="evo-control"><label for="evoTape">Tape patina <span id="evoTapeVal">28%</span></label><input type="range" id="evoTape" min="0" max="100" value="28"><small>Warble, hiss and softened edges</small></div>
+        <div class="evo-control"><label for="evoRandomDepth">Randomize button <span id="evoRandomDepthVal">Gentle</span></label><select id="evoRandomDepth"><option value="gentle">Gentle · small changes</option><option value="medium">Medium · more rearrangement</option><option value="wild">Wild · new pattern</option></select><small>Your drum steps are never randomized from the dock.</small></div>
       </div>
-      <div class="evo-status" id="evoStatus" role="status" aria-live="polite">Ready · Journey: Intro · A little difference each time around.</div>
+      <div class="evo-extra-actions"><button type="button" id="evoPhrase" class="evo-button">↝ New subtle variation</button><button type="button" id="evoTap" class="evo-button">Tap tempo</button><button type="button" id="reset" class="evo-button">↺ Reset pattern</button><button type="button" id="evoLoadBase" class="evo-button">Load scene’s bass &amp; drums</button></div>
+      </details>
+      <div class="evo-status" id="evoStatus" role="status" aria-live="polite">Ready · Beat lock ON · Your pattern stays put.</div>
     </div>
   </div>
 </section>
@@ -150,6 +194,32 @@ button { min-height:44px; }
 <div class="control"><div class="ctop"><label for="volume">Volume</label><strong id="volumeVal">65%</strong></div><input id="volume" type="range" min="0" max="100" value="65"><p>Output level; starts conservatively</p></div>
 </div><div class="summary"><span><strong id="modeName">Twin 303s</strong> · Preset 01</span><span>SAW · LOW-PASS · ENVELOPE</span></div></section>
 </div></div>
+
+<section class="sonic-section" id="sonicLab" aria-label="Additional sound design instruments">
+  <div class="sonic-heading"><div><div class="v2-kicker">07 / Sonic expansion</div><h2>New colors. Same composition.</h2><p>Blend evolving FM harmonics, tactile noise and your own recordings beneath the existing bass, pads, and beats. The sequencer stays exactly as you programmed it.</p></div><span class="evo-pill">iPhone ready · local audio</span></div>
+  <div class="sonic-grid">
+    <div class="sonic-card"><h3>◌ FM Atmosphere</h3><p>Bells, weightless drones, distant harmonic overtones. A quiet phrase every four bars.</p>
+      <label for="sonicFMLevel">FM layer <span id="sonicFMLevelVal">26%</span></label><input id="sonicFMLevel" type="range" min="0" max="100" value="26">
+      <label for="sonicFMTone">Character</label><select id="sonicFMTone"><option value="haze" selected>Haze · soft, drifting</option><option value="bells">Memory bells · glassy</option><option value="metal">Metal · unusual harmonics</option></select>
+      <button type="button" id="sonicFMAudition" class="sonic-btn">▶ Hear FM tone</button>
+    </div>
+    <div class="sonic-card"><h3>◈ Dust &amp; percussion</h3><p>Filtered white noise can become tape grit, brushed hats, or the transient of a snare.</p>
+      <label for="sonicDustLevel">Percussive dust <span id="sonicDustLevelVal">8%</span></label><input id="sonicDustLevel" type="range" min="0" max="100" value="8">
+      <label for="sonicDustColor">Timbre</label><select id="sonicDustColor"><option value="soft">Soft · muted</option><option value="dusty" selected>Dusty · filtered</option><option value="bright">Bright · sharper</option></select>
+      <button type="button" id="sonicDustAudition" class="sonic-btn">▶ Hear texture</button>
+    </div>
+    <div class="sonic-card"><h3>▤ Field recording / sample</h3><p>Layer a WAV, MP3, or supported audio file from iPhone Files. Starts on the musical grid.</p>
+      <label for="sonicSampleFile">Choose a recording</label><input id="sonicSampleFile" type="file" accept="audio/*,.wav,.mp3,.m4a,.aiff">
+      <label for="sonicSampleURL">Or a public sample URL</label><input id="sonicSampleURL" type="url" placeholder="https://…/recording.wav" autocapitalize="off" autocomplete="off" spellcheck="false">
+      <button type="button" id="sonicLoadURL" class="sonic-btn">Load URL</button>
+      <label for="sonicSampleEvery">Trigger</label><select id="sonicSampleEvery"><option value="0">Manual only</option><option value="16" selected>Every bar</option><option value="64">Every 4 bars</option></select>
+      <label for="sonicSampleLevel">Sample level <span id="sonicSampleLevelVal">35%</span></label><input id="sonicSampleLevel" type="range" min="0" max="100" value="35">
+      <button type="button" id="sonicSamplePreview" class="sonic-btn">▶ Preview sample</button>
+      <p class="muted" id="sonicSampleName">No recording loaded. Audio files stay on your device.</p>
+    </div>
+  </div>
+  <div id="sonicStatus" class="sonic-feedback" role="status" aria-live="polite">Extra layers ready. Press Play above; adjust as you listen. Turn levels down before importing loud audio.</div>
+</section>
 <section class="v2-section" id="drumStudio" aria-label="Drum machine">
   <div class="v2-head"><div><div class="v2-kicker">04 / Rhythm Engine</div><h2>Build the beat.</h2><p>Four synthesized drum voices, sixteen steps, perfectly synchronized to the orbit. Tap the lit blocks to compose while the music plays.</p></div><div class="v2-actions"><button type="button" class="v2-btn" id="v2Fill">↝ New groove</button><button type="button" class="v2-btn" id="v2Clear">Clear drums</button></div></div>
   <div class="v2-grid-scroll" tabindex="0" aria-label="Scroll horizontally to edit all sixteen steps"><div id="v2Grid" class="v2-grid" role="group" aria-label="Drum step sequencer"></div></div>
@@ -164,7 +234,7 @@ button { min-height:44px; }
   </div>
   <div class="v2-divider"><div class="v2-kicker">Project library</div><div class="v2-project"><div><label for="v2Name">Project name</label><input id="v2Name" maxlength="48" placeholder="My acid groove" autocomplete="off"></div><div><label for="v2Saved">Saved projects</label><select id="v2Saved"><option value="">Choose a project…</option></select></div><div class="v2-actioncol"><button type="button" class="v2-btn primary" id="v2Save">Save</button></div><div class="v2-actioncol"><button type="button" class="v2-btn" id="v2Load">Load</button></div><div class="v2-actioncol"><button type="button" class="v2-btn" id="v2Delete">Delete</button></div></div><div id="v2Status" class="v2-status" role="status" aria-live="polite">Changes automatically recover when you return on this device.</div></div>
 </section>
-<p class="footer">Original, browser-based proof of concept inspired by the uploaded acid-sequencer recording. Turn your device volume down before pressing Play. Audio requires a tap to start and plays only while this page is open.</p>
+<p class="footer">Acid Lab 3.2 · Browser-synthesized audio. Your patterns save locally on this device. Turn down your volume before first play; keep this tab active for sound.</p>
 </main>
 <script>
 (()=>{'use strict';
@@ -209,12 +279,22 @@ svg.addEventListener('click',e=>{
 $('down').onclick=()=>editPitch(-1);$('up').onclick=()=>editPitch(1);function editPitch(d){const s=patterns[selected.ring][selected.index];s.note=Math.min(84,Math.max(24,s.note+d));s.on=true;refreshEditor();renderOrbit()}
 for(const flag of ['accent','slide'])$(flag).onclick=()=>{const s=patterns[selected.ring][selected.index];s[flag]=!s[flag];refreshEditor();renderOrbit()};
 function curve(drive){const amount=Math.max(0,Number(drive));const n=1024,arr=new Float32Array(n),k=amount*4;for(let i=0;i<n;i++){const x=i*2/n-1;arr[i]=amount===0?x:(1+k)*x/(1+k*Math.abs(x))}return arr}
-function initAudio(){if(audio)return;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)throw Error('This browser does not support Web Audio');audio=new AC();analyser=audio.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=.75;compressor=audio.createDynamicsCompressor();compressor.threshold.value=-16;compressor.knee.value=12;compressor.ratio.value=5;compressor.attack.value=.005;compressor.release.value=.22;master=audio.createGain();master.gain.value=.29*Number($('volume').value)/100;distortion=audio.createWaveShaper();distortion.oversample='2x';distortion.curve=curve($('drive').value);distortion.connect(compressor);compressor.connect(master);master.connect(analyser);analyser.connect(audio.destination);window.AcidLabV3?.initAudio?.(audio,compressor,distortion)}
+function initAudio(){if(audio)return;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)throw Error('This browser does not support Web Audio');audio=new AC();analyser=audio.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=.75;compressor=audio.createDynamicsCompressor();compressor.threshold.value=-16;compressor.knee.value=12;compressor.ratio.value=5;compressor.attack.value=.005;compressor.release.value=.22;master=audio.createGain();master.gain.value=.29*Number($('volume').value)/100;distortion=audio.createWaveShaper();distortion.oversample='2x';distortion.curve=curve($('drive').value);distortion.connect(compressor);compressor.connect(master);master.connect(analyser);analyser.connect(audio.destination);window.AcidLabV3?.initAudio?.(audio,compressor,distortion);window.AcidLabExtra?.initAudio?.(audio,compressor)}
 let latestNote=36;const previousPitch=[0,0];
-function sound(step,time,ring){const decay=Number($('decay').value)/1000;const freq=hz(step.note);const osc=audio.createOscillator();const voice=window.AcidLabV2?.getVoice?.(ring);osc.type=voice?.wave||(ring===0?'sawtooth':'square');const filter=audio.createBiquadFilter();filter.type='lowpass';filter.Q.value=.65+Number($('reso').value)/100*20;const envelope=audio.createGain();envelope.gain.value=0;const mix=audio.createGain();mix.gain.value=(ring===0?.54:.26)*(voice?.level??1);osc.connect(filter);filter.connect(envelope);envelope.connect(mix);mix.connect(distortion);let f0=Math.max(80,calcCutoff()*(voice?.tone??1));const env=Number($('env').value)/100;const v3Engine=window.AcidLabV3;f0*=v3Engine?.toneAt?.(tick,ring)??1;const peak=Math.min(11500,f0*(1+env*13));const dur=Math.max(.07,decay);osc.frequency.setValueAtTime(step.slide&&previousPitch[ring]?previousPitch[ring]:freq,time);if(step.slide&&previousPitch[ring])osc.frequency.exponentialRampToValueAtTime(freq,time+Math.min(dur*.6,.115));previousPitch[ring]=freq;osc.detune.setValueAtTime(window.AcidLabV3?.wow?.(tick,ring)??0,time);filter.frequency.setValueAtTime(Math.max(60,peak),time);filter.frequency.exponentialRampToValueAtTime(Math.max(60,f0),time+dur*.95);const amp=step.accent?.82:.57;envelope.gain.setValueAtTime(.0001,time);envelope.gain.exponentialRampToValueAtTime(amp,time+.009);envelope.gain.exponentialRampToValueAtTime(.0001,time+dur);osc.start(time);osc.stop(time+dur+.03);osc.onended=()=>{osc.disconnect();filter.disconnect();envelope.disconnect();mix.disconnect()};latestNote=step.note;currentHz=peak;lastNoteAt=performance.now();voiceCount++;setTimeout(()=>{if(playing){$('currentNote').textContent='NOTE '+noteName(latestNote);renderOrbit()}},Math.max(0,(time-audio.currentTime)*1000))}
-function schedule(){if(!playing||!audio)return;while(nextNoteTime<audio.currentTime+.12){const v3=window.AcidLabV3;const bpm=Number($('bpm').value);const playAt=nextNoteTime+(v3?.swingOffset?.(tick,bpm)??0);v3?.onTick?.(tick,playAt,audio);for(let r=0;r<patterns.length;r++){const st=patterns[r][tick%patterns[r].length];const actual=v3?.transformNote?.(st,r,tick)??st;if(actual.on)sound(actual,playAt,r)}window.AcidLabV2?.scheduleDrums?.(playAt,tick,audio,compressor);tick++;nextNoteTime+=(60/bpm/4)*(v3?.tempoScale?.(tick)??1)}renderOrbit()}
+function sound(step,time,ring){const decay=Number($('decay').value)/1000;const freq=hz(step.note);const osc=audio.createOscillator();const voice=window.AcidLabV2?.getVoice?.(ring);osc.type=voice?.wave||(ring===0?'sawtooth':'square');const filter=audio.createBiquadFilter();filter.type='lowpass';filter.Q.value=.65+Number($('reso').value)/100*20;const envelope=audio.createGain();envelope.gain.value=0;const mix=audio.createGain();mix.gain.value=(ring===0?.54:.26)*(voice?.level??1)*(window.AcidLabV3?.bassGain?.()??1);osc.connect(filter);filter.connect(envelope);envelope.connect(mix);mix.connect(distortion);let f0=Math.max(80,calcCutoff()*(voice?.tone??1));const env=Number($('env').value)/100;const v3Engine=window.AcidLabV3;f0*=v3Engine?.toneAt?.(tick,ring)??1;const peak=Math.min(11500,f0*(1+env*13));const dur=Math.max(.07,decay);osc.frequency.setValueAtTime(step.slide&&previousPitch[ring]?previousPitch[ring]:freq,time);if(step.slide&&previousPitch[ring])osc.frequency.exponentialRampToValueAtTime(freq,time+Math.min(dur*.6,.115));previousPitch[ring]=freq;osc.detune.setValueAtTime(window.AcidLabV3?.wow?.(tick,ring)??0,time);filter.frequency.setValueAtTime(Math.max(60,peak),time);filter.frequency.exponentialRampToValueAtTime(Math.max(60,f0),time+dur*.95);const amp=step.accent?.82:.57;envelope.gain.setValueAtTime(.0001,time);envelope.gain.exponentialRampToValueAtTime(amp,time+.009);envelope.gain.exponentialRampToValueAtTime(.0001,time+dur);osc.start(time);osc.stop(time+dur+.03);osc.onended=()=>{osc.disconnect();filter.disconnect();envelope.disconnect();mix.disconnect()};latestNote=step.note;currentHz=peak;lastNoteAt=performance.now();voiceCount++;setTimeout(()=>{if(playing){$('currentNote').textContent='NOTE '+noteName(latestNote);renderOrbit()}},Math.max(0,(time-audio.currentTime)*1000))}
+function schedule(){if(!playing||!audio)return;while(nextNoteTime<audio.currentTime+.12){const v3=window.AcidLabV3;const bpm=Number($('bpm').value);const playAt=nextNoteTime+(v3?.swingOffset?.(tick,bpm)??0);v3?.onTick?.(tick,playAt,audio);window.AcidLabExtra?.onTick?.(tick,playAt,audio);for(let r=0;r<patterns.length;r++){const st=patterns[r][tick%patterns[r].length];const actual=v3?.transformNote?.(st,r,tick)??st;if(actual.on)sound(actual,playAt,r)}window.AcidLabV2?.scheduleDrums?.(playAt,tick,audio,compressor);tick++;nextNoteTime+=(60/bpm/4)*(v3?.tempoScale?.(tick)??1)}renderOrbit()}
 async function togglePlay(){try{initAudio();await audio.resume();playing=!playing;if(playing){nextNoteTime=audio.currentTime+.045;tick=0;clock=setInterval(schedule,25);schedule();$('play').textContent='■ Stop';$('play').setAttribute('aria-label','Stop sequencer');$('led').classList.add('live');$('status').textContent='Playing live';window.AcidLabV3?.onTransport?.(true)}else{clearInterval(clock);$('play').textContent='▶ Play';$('play').setAttribute('aria-label','Start sequencer');$('led').classList.remove('live');$('status').textContent='Stopped';window.AcidLabV3?.onTransport?.(false);$('currentNote').textContent='NOTE —'}renderOrbit()}catch(err){$('status').textContent='Audio unavailable: '+err.message;console.error(err)}}$('play').onclick=togglePlay;
-$('random').onclick=()=>{patterns.forEach((steps,r)=>steps.forEach((st,i)=>{st.on=Math.random()<(r===0?.44:.33);st.note=scales[preset][Math.floor(Math.random()*scales[preset].length)]+(r?12:0);st.accent=Math.random()<.25;st.slide=Math.random()<.17}));refreshEditor();renderOrbit()};$('reset').onclick=()=>choosePreset(preset);document.querySelectorAll('.preset').forEach(b=>b.onclick=()=>choosePreset(b.dataset.preset));['bpm','cutoff','reso','env','decay','drive','volume'].forEach(id=>$(id).addEventListener('input',refreshControls));
+function randomizePattern(depth='gentle'){
+ const chance=depth==='wild'?.75:depth==='medium'?.31:.12;
+ patterns.forEach((steps,r)=>steps.forEach((st,i)=>{
+  if(Math.random()>chance)return;
+  if(depth==='wild' || Math.random()<.38)st.on=depth==='wild'?(Math.random()<(r===0?.4:.3)):!st.on;
+  if(st.on&&Math.random()<.75){const pool=scales[preset].map(n=>n+(r?12:0));const choices=pool.filter(n=>depth==='wild'||Math.abs(n-st.note)<=5);st.note=choices.length?choices[Math.floor(Math.random()*choices.length)]:st.note}
+  if(depth!=='gentle'&&Math.random()<.25)st.accent=!st.accent;
+  if(depth==='wild')st.slide=Math.random()<.16;
+ }));refreshEditor();renderOrbit();
+}
+$('random').onclick=()=>randomizePattern(window.AcidLabV3?.getState?.().randomDepth||'gentle');$('reset').onclick=()=>choosePreset(preset);document.querySelectorAll('.preset').forEach(b=>b.onclick=()=>choosePreset(b.dataset.preset));['bpm','cutoff','reso','env','decay','drive','volume'].forEach(id=>$(id).addEventListener('input',refreshControls));
 const wave=$('wave'),spectrum=$('spectrum'),filterCanvas=$('filter');function ctx(canvas){const dpi=Math.min(2,window.devicePixelRatio||1),w=Math.max(10,canvas.clientWidth),h=Math.max(10,canvas.clientHeight);if(canvas.width!==Math.round(w*dpi)||canvas.height!==Math.round(h*dpi)){canvas.width=Math.round(w*dpi);canvas.height=Math.round(h*dpi)}const c=canvas.getContext('2d');c.setTransform(dpi,0,0,dpi,0,0);return {c,w,h}}
 function backdrop(c,w,h){c.clearRect(0,0,w,h);c.strokeStyle='#29413d';c.lineWidth=.5;for(let i=1;i<5;i++){let y=i*h/5;c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke()}for(let i=1;i<10;i++){let x=i*w/10;c.beginPath();c.moveTo(x,0);c.lineTo(x,h);c.stroke()}}
 function draw(){requestAnimationFrame(draw);{const {c,w,h}=ctx(wave);backdrop(c,w,h);c.beginPath();c.lineWidth=1.8;c.strokeStyle='#79d4b6';if(analyser&&playing){const arr=new Uint8Array(analyser.fftSize);analyser.getByteTimeDomainData(arr);for(let i=0;i<arr.length;i+=3){const x=i/(arr.length-1)*w;const y=(arr[i]/255)*h;if(i===0)c.moveTo(x,y);else c.lineTo(x,y)}}else{for(let i=0;i<=w;i+=2){const v=Math.sin(i*.06)*.05+Math.sin(i*.13)*.02;const y=h*.5+v*h;if(i===0)c.moveTo(i,y);else c.lineTo(i,y)}}c.stroke()}
@@ -223,6 +303,8 @@ function draw(){requestAnimationFrame(draw);{const {c,w,h}=ctx(wave);backdrop(c,
 window.AcidLab={
  getState(){return {preset,patterns:patterns.map(row=>row.map(st=>({...st}))),controls:Object.fromEntries(['bpm','cutoff','reso','env','decay','drive','volume'].map(id=>[id,Number($(id).value)]))}},
  loadState(state){if(!state||!config[state.preset]||!Array.isArray(state.patterns)||state.patterns.length!==2)throw Error('Invalid sequencer pattern');choosePreset(state.preset);const lengths=config[state.preset].lengths;patterns=state.patterns.map((row,r)=>Array.from({length:lengths[r]},(_,i)=>{const old=row[i]||{};return {on:!!old.on,note:Math.round(Math.max(24,Math.min(84,Number(old.note)||36))),accent:!!old.accent,slide:!!old.slide}}));for(const id of ['bpm','cutoff','reso','env','decay','drive','volume']){const ctl=$(id),raw=Number(state.controls?.[id]);if(Number.isFinite(raw))ctl.value=Math.max(Number(ctl.min),Math.min(Number(ctl.max),raw))}tick=0;selected={ring:0,index:0};refreshControls();refreshEditor();renderOrbit()},
+ clearBass(){patterns.forEach(row=>row.forEach(st=>{st.on=false}));refreshEditor();renderOrbit()},
+ randomize:randomizePattern,
  getAudio(){initAudio();return {audio,compressor}},isPlaying(){return playing}
 };
 choosePreset('twin');requestAnimationFrame(draw);
@@ -283,7 +365,7 @@ function applyState(s){
 function readJSON(key, fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
 function scheduleSave(){if(ignoreChanges)return;clearTimeout(saveTimer);saveTimer=setTimeout(()=>{try{localStorage.setItem(keys.auto,JSON.stringify(projectState()))}catch(e){message('Local saving is unavailable in this browser: '+e.message)}},250)}
 function message(t){$('v2Status').textContent=t}
-function syncMixer(){for(let r=0;r<2;r++){for(const id of ['Wave','Tone','Level']){const el=$('v2'+id+r);if(el)el.value=voices[r][id.toLowerCase()]};$('v2Tone'+r+'Value').textContent=voices[r].tone+'%';$('v2Level'+r+'Value').textContent=voices[r].level+'%'}$('v2DrumLevel').value=drumLevel;$('v2DrumLevelValue').textContent=drumLevel+'%';if(drumBus && core.getAudio().audio)drumBus.gain.setTargetAtTime(drumLevel/100*.44,core.getAudio().audio.currentTime,.02)}
+function syncMixer(){for(let r=0;r<2;r++){for(const id of ['Wave','Tone','Level']){const el=$('v2'+id+r);if(el)el.value=voices[r][id.toLowerCase()]};$('v2Tone'+r+'Value').textContent=voices[r].tone+'%';$('v2Level'+r+'Value').textContent=voices[r].level+'%'}$('v2DrumLevel').value=drumLevel;$('v2DrumLevelValue').textContent=drumLevel+'%';if(drumBus && core.getAudio().audio)drumBus.gain.setTargetAtTime(drumLevel/100*.44*(window.AcidLabV3?.isDrumMix?.()??1),core.getAudio().audio.currentTime,.02)}
 function fillGroove(){tracks.forEach((row,r)=>{for(let i=0;i<16;i++){row[i] = r===0 ? (i%4===0||Math.random()<.13) : r===1 ? (i===4||i===12||Math.random()<.06) : r===2 ? Math.random()<.58 : Math.random()<.12}});drawGrid();scheduleSave()}
 function refreshProjects(){const saved=readJSON(keys.projects,{});const select=$('v2Saved');const previously=select.value;select.replaceChildren();const placeholder=document.createElement('option');placeholder.value='';placeholder.textContent='Choose a project…';select.append(placeholder);Object.keys(saved).sort().forEach(name=>{const opt=document.createElement('option');opt.value=name;opt.textContent=name;select.append(opt)});if(saved[previously])select.value=previously}
 function bindUI(){
@@ -313,11 +395,12 @@ function fireDrum(r,t,ctx){if(!drumBus || drumLevel===0)return;
  else if(r===2){makeNoise(ctx,drumBus,t,.066,'highpass',6500,.27)}
  else {const g=makeNoise(ctx,drumBus,t,.18,'bandpass',1700,.4);for(const offset of [.014,.029,.052]){g.gain.setValueAtTime(.0001,t+offset);g.gain.exponentialRampToValueAtTime(.29-offset*3,t+offset+.003);g.gain.exponentialRampToValueAtTime(.0001,t+offset+.012)}}
 }
-function ensureDrums(ctx,dest){if(drumBus)return;drumBus=ctx.createGain();drumBus.gain.value=drumLevel/100*.44;drumBus.connect(dest)}
+function ensureDrums(ctx,dest){if(drumBus)return;drumBus=ctx.createGain();drumBus.gain.value=drumLevel/100*.44*(window.AcidLabV3?.isDrumMix?.()??1);drumBus.connect(dest)}
 function highlight(i){$('v2Grid').querySelectorAll('.v2-step').forEach((btn,n)=>btn.classList.toggle('active',n%16===i))}
 window.AcidLabV2={
  getVoice(r){const v=voices[r];return {wave:v.wave,tone:v.tone/100,level:v.level/100}},
- scheduleDrums(time,tick,ctx,dest){ensureDrums(ctx,dest);const i=tick%16;for(let r=0;r<4;r++){const v3=window.AcidLabV3;const on=v3?.isDrumOn?.(r,i,tick,tracks[r][i])??tracks[r][i];if(on){fireDrum(r,time,ctx);if(v3?.drumRatchet?.(r,i,tick))fireDrum(r,time+60/Number($('bpm').value)/8,ctx)}}setTimeout(()=>{if(core.isPlaying())highlight(i);else highlight(-1)},Math.max(0,(time-ctx.currentTime)*1000))},
+ scheduleDrums(time,tick,ctx,dest){ensureDrums(ctx,dest);drumBus.gain.setTargetAtTime(drumLevel/100*.44*(window.AcidLabV3?.isDrumMix?.()??1),time,.015);const i=tick%16;for(let r=0;r<4;r++){const v3=window.AcidLabV3;const on=v3?.isDrumOn?.(r,i,tick,tracks[r][i])??tracks[r][i];if(on){fireDrum(r,time,ctx);if(v3?.drumRatchet?.(r,i,tick))fireDrum(r,time+60/Number($('bpm').value)/8,ctx)}}setTimeout(()=>{if(core.isPlaying())highlight(i);else highlight(-1)},Math.max(0,(time-ctx.currentTime)*1000))},
+ clearDrums(){tracks.forEach(row=>row.fill(false));drawGrid();scheduleSave()},
  onPreset(p){presetDrums(p)}
 };
 presetDrums(core.getState().preset);
@@ -334,19 +417,19 @@ const core=window.AcidLab;
 if(!core||!window.AcidLabV2){console.error('Evolution engine requires Acid Lab 2');return}
 const presetMap={circuit:'twin',fracture:'breaks',afterglow:'minimal',deep:'minimal'};
 const scenes={
- circuit:{x:24,y:28,swing:12,drift:1,pad:23,space:16},
- fracture:{x:82,y:40,swing:38,drift:21,pad:28,space:33},
- afterglow:{x:37,y:79,swing:15,drift:29,pad:82,space:76},
- deep:{x:19,y:96,swing:7,drift:18,pad:95,space:90}
+ circuit:{x:11,y:35,swing:9,drift:2,pad:32,space:22,bass:85,beat:63,ghost:7,tape:12,structure:78,beatLock:true},
+ fracture:{x:63,y:37,swing:32,drift:8,pad:31,space:35,bass:88,beat:72,ghost:9,tape:20,structure:40,beatLock:false},
+ afterglow:{x:9,y:84,swing:7,drift:4,pad:88,space:70,bass:50,beat:42,ghost:36,tape:54,structure:92,beatLock:true},
+ deep:{x:5,y:96,swing:4,drift:3,pad:95,space:85,bass:24,beat:20,ghost:32,tape:70,structure:97,beatLock:true}
 };
-let state={scene:'circuit',enabled:true,journey:true,freeze:false,x:24,y:28,swing:12,drift:1,pad:23,space:16,seed:248312};
+let state={scene:'circuit',enabled:true,journey:false,freeze:false,seed:248312,randomDepth:'gentle',...scenes.circuit};
 const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
 const rand=(tick,salt)=>{let x=(Math.imul((tick|0)+1,1664525)^Math.imul(state.seed|0,1013904223)^Math.imul(salt+2,2246822519))>>>0;x=Math.imul(x^(x>>>16),2246822519);x=Math.imul(x^(x>>>13),3266489917);return ((x^(x>>>16))>>>0)/4294967296};
 const xNow=tick=>state.freeze?(tick%16):tick;
 const section=tick=>Math.floor(tick/64)%4;
 const sectionName=['Intro','Build','Breakdown','Release'];
 const timeStrength=tick=>!state.enabled?1:!state.journey?1:[.67,1.05,.35,1.13][section(tick)];
-const intensity=tick=>state.enabled?state.x/100*timeStrength(tick):0;
+const intensity=tick=>state.enabled?state.x/100*timeStrength(tick)*(1-.86*state.structure/100):0;
 const configState=()=>({...state});
 function show(){
  $('evoCursor').style.left=state.x+'%';$('evoCursor').style.top=(100-state.y)+'%';
@@ -354,37 +437,39 @@ function show(){
  $('evoPad').setAttribute('aria-valuenow',state.x);
  $('evoPad').setAttribute('aria-valuetext',state.x+' percent variation, '+state.y+' percent atmosphere');
  document.querySelectorAll('.evo-scene').forEach(b=>b.classList.toggle('selected',b.dataset.scene===state.scene));
- for(const [id,v] of [['Swing',state.swing],['Drift',state.drift],['PadLevel',state.pad],['Space',state.space]]){$('evo'+id).value=v;$('evo'+id+'Val').textContent=v+'%'}
- for(const [id,v] of [['evoEnabled',state.enabled],['evoJourney',state.journey],['evoFreeze',state.freeze]]){$(id).setAttribute('aria-pressed',String(v))}
- $('evoEnabled').textContent=state.enabled?'◉ Evolution ON':'◯ Evolution OFF';$('evoJourney').textContent=state.journey?'◈ Journey ON':'◇ Journey OFF';$('evoFreeze').textContent=state.freeze?'❄ Variation frozen':'❄ Freeze variation';
+ for(const [id,v] of [['Swing',state.swing],['Drift',state.drift],['PadLevel',state.pad],['Space',state.space],['Bass',state.bass],['Beat',state.beat],['Ghost',state.ghost],['Tape',state.tape]]){$('evo'+id).value=v;$('evo'+id+'Val').textContent=v+'%'}
+ $('evoStructure').value=state.structure;$('evoStructureVal').textContent=state.structure+'% · '+(state.structure>=75?'grounded':state.structure>=40?'balanced':'loose');$('evoRandomDepth').value=state.randomDepth;$('evoRandomDepthVal').textContent=state.randomDepth[0].toUpperCase()+state.randomDepth.slice(1);
+ for(const [id,v] of [['evoEnabled',state.enabled],['evoJourney',state.journey],['evoFreeze',state.freeze],['evoBeatLock',state.beatLock]]){$(id).setAttribute('aria-pressed',String(v))}
+ $('evoEnabled').textContent=state.enabled?'◉ Evolution ON':'◯ Evolution OFF';$('evoJourney').textContent=state.journey?'◈ Journey ON':'◇ Journey OFF';$('evoFreeze').textContent=state.freeze?'❄ Variation frozen':'❄ Freeze variation';$('evoBeatLock').textContent=state.beatLock?'● Keep beats steady':'○ Allow drum variations';
  $('evoSceneStatus').textContent=({'circuit':'Circuit','fracture':'Fracture','afterglow':'Afterglow','deep':'Deep Space'})[state.scene]+(state.enabled?' · Evolving':' · Fixed loop');
  syncEffects();
 }
 function setXY(x,y){state.x=clamp(Math.round(x),0,100);state.y=clamp(Math.round(y),0,100);show()}
-function setScene(name,changeBase){if(!scenes[name])return;state={...state,...scenes[name],scene:name,freeze:false};show();if(changeBase){document.querySelector('.preset[data-preset="'+presetMap[name]+'"]').click();const levels={circuit:[100,100,65],fracture:[95,95,84],afterglow:[67,48,44],deep:[42,30,26]}[name];for(let i=0;i<2;i++){$('v2Level'+i).value=levels[i];$('v2Level'+i).dispatchEvent(new Event('input',{bubbles:true}))}$('v2DrumLevel').value=levels[2];$('v2DrumLevel').dispatchEvent(new Event('input',{bubbles:true}));$('evoStatus').textContent='Scene: '+name+' · Tempo, layers, and patterns are ready to evolve.'}}
-function load(s){if(!s||typeof s!=='object')return;const scene=String(s.scene||'circuit');if(!scenes[scene])return;state={...state,scene};for(const prop of ['x','y','swing','drift','pad','space'])if(Number.isFinite(Number(s[prop])))state[prop]=clamp(Math.round(Number(s[prop])),0,prop==='swing'?70:100);
- for(const prop of ['enabled','journey','freeze'])if(typeof s[prop]==='boolean')state[prop]=s[prop];if(Number.isSafeInteger(s.seed))state.seed=s.seed;show()}
+function setScene(name){if(!scenes[name])return;state={...state,...scenes[name],scene:name,freeze:false};show();$('evoStatus').textContent='Scene: '+name+' · Your bass and drum steps are unchanged.'}
+function load(s){if(!s||typeof s!=='object')return;const scene=String(s.scene||'circuit');if(!scenes[scene])return;state={...state,scene};for(const prop of ['x','y','swing','drift','pad','space','bass','beat','ghost','tape','structure'])if(Number.isFinite(Number(s[prop])))state[prop]=clamp(Math.round(Number(s[prop])),0,prop==='swing'?70:100);
+ for(const prop of ['enabled','journey','freeze','beatLock'])if(typeof s[prop]==='boolean')state[prop]=s[prop];if(Number.isSafeInteger(s.seed))state.seed=s.seed;if(['gentle','medium','wild'].includes(s.randomDepth))state.randomDepth=s.randomDepth;show()}
 function setPadFromPointer(e){const b=$('evoPad').getBoundingClientRect();setXY(100*(e.clientX-b.left)/b.width,100*(1-(e.clientY-b.top)/b.height))}
 const hit=$('evoPad');hit.addEventListener('pointerdown',e=>{e.preventDefault();hit.setPointerCapture(e.pointerId);setPadFromPointer(e)});hit.addEventListener('pointermove',e=>{if(e.buttons||e.pressure)setPadFromPointer(e)});
 hit.addEventListener('keydown',e=>{const amt=e.shiftKey?10:3;const change={ArrowLeft:[-amt,0],ArrowRight:[amt,0],ArrowUp:[0,amt],ArrowDown:[0,-amt]}[e.key];if(change){e.preventDefault();setXY(state.x+change[0],state.y+change[1])}});
-document.querySelectorAll('.evo-scene').forEach(b=>b.onclick=()=>setScene(b.dataset.scene,true));
-$('evoEnabled').onclick=()=>{state.enabled=!state.enabled;show()};$('evoJourney').onclick=()=>{state.journey=!state.journey;show()};$('evoFreeze').onclick=()=>{state.freeze=!state.freeze;show()};
+document.querySelectorAll('.evo-scene').forEach(b=>b.onclick=()=>setScene(b.dataset.scene));
+$('evoLoadBase').onclick=()=>{document.querySelector('[data-preset="'+presetMap[state.scene]+'"]').click();$('evoStatus').textContent='Loaded the '+state.scene+' base pattern. Saved projects remain untouched.'};
+$('evoEnabled').onclick=()=>{state.enabled=!state.enabled;show()};$('evoJourney').onclick=()=>{state.journey=!state.journey;show()};$('evoFreeze').onclick=()=>{state.freeze=!state.freeze;show()};$('evoBeatLock').onclick=()=>{state.beatLock=!state.beatLock;show()};
 $('evoPhrase').onclick=()=>{state.seed=(Math.random()*0x7fffffff)|0;state.freeze=false;show();$('evoStatus').textContent='New musical variation generated. Your underlying notes remain unchanged.'};
-for(const [prop,id] of [['swing','Swing'],['drift','Drift'],['pad','PadLevel'],['space','Space']])$('evo'+id).oninput=e=>{state[prop]=Number(e.target.value);show()};
+for(const [prop,id] of [['swing','Swing'],['drift','Drift'],['pad','PadLevel'],['space','Space'],['bass','Bass'],['beat','Beat'],['ghost','Ghost'],['tape','Tape'],['structure','Structure']])$('evo'+id).oninput=e=>{state[prop]=Number(e.target.value);show()};$('evoRandomDepth').onchange=e=>{state.randomDepth=e.target.value;show()};
 let taps=[];$('evoTap').onclick=()=>{const now=performance.now();taps=taps.filter(t=>now-t<4000);taps.push(now);if(taps.length>=3){const intervals=taps.slice(1).map((t,i)=>t-taps[i]).filter(dt=>dt>240&&dt<1350);if(intervals.length){const avg=intervals.reduce((a,b)=>a+b,0)/intervals.length;const target=clamp(Math.round(60000/avg),55,200);$('bpm').value=target;$('bpm').dispatchEvent(new Event('input',{bubbles:true}));$('evoStatus').textContent='Tap tempo: '+target+' BPM'}}};
-function wow(tick,ring){return state.enabled?((Math.sin(tick*.029+ring*.8)*.64+Math.sin(tick*.008+ring)*.36)*state.y*.11):0}
-function toneAt(tick,ring){if(!state.enabled)return 1;const slow=Math.sin(tick*.031+ring*1.3)*.23+Math.sin(tick*.007+ring*2)*.24;return clamp(1+slow*(.2+state.y/100)*.95,.55,1.55)}
+function wow(tick,ring){return state.enabled?((Math.sin(tick*.029+ring*.8)*.64+Math.sin(tick*.008+ring)*.36)*state.tape*.085):0}
+function toneAt(tick,ring){if(!state.enabled)return 1;const slow=Math.sin(tick*.031+ring*1.3)*.23+Math.sin(tick*.007+ring*2)*.24;return clamp(1+slow*(.15+state.y/100)*.43,.75,1.3)}
 function note(st,ring,tick){if(!state.enabled)return st;
  const t=xNow(tick),mut=intensity(tick),s={...st};
  const onChance=mut*.19;
  if(rand(t,30+ring)<onChance) s.on=!s.on;
- if(s.on && rand(t,44+ring)<mut*.25){const shift=[-5,-2,2,5,7,0][Math.floor(rand(t,51+ring)*6)];s.note=clamp(s.note+shift,24,84)}
+ if(s.on && rand(t,44+ring)<mut*.25){const shift=(state.scene==='afterglow'||state.scene==='deep'?[0,2,-2,5,-5]:[-5,-2,2,5,7,0])[Math.floor(rand(t,51+ring)*(state.scene==='afterglow'||state.scene==='deep'?5:6))];s.note=clamp(s.note+shift,24,84)}
  if(rand(t,60+ring)<mut*.14) s.accent=!s.accent;
  if(rand(t,74+ring)<mut*.09)s.slide=true;
  if(state.journey&&section(tick)===2&&ring===1&&rand(t,83)<.65) s.on=false;
  return s;
 }
-function drum(r,idx,tick,isOn){if(!state.enabled)return isOn;const mut=intensity(tick),t=xNow(tick);
+function drum(r,idx,tick,isOn){if(!state.enabled||state.beatLock)return isOn;const mut=intensity(tick),t=xNow(tick);
  if(state.journey&&section(tick)===2&&r!==0&&rand(t,100+r)<.68)return false;
  if(state.journey&&section(tick)===0&&r===3&&rand(t,103)<.65)return false;
  if(r===0&&idx%4===0&&state.journey&&section(tick)!==2)return isOn;
@@ -392,7 +477,7 @@ function drum(r,idx,tick,isOn){if(!state.enabled)return isOn;const mut=intensity
  if(tick%64>=60 && rand(t,150+r)<mut*.37 && (r===1||r===2))return true;
  return isOn;
 }
-function drumRatchet(r,idx,tick){return state.enabled&&state.x>45&&(r===2||r===1)&&rand(xNow(tick),160+r)<intensity(tick)*.17;}
+function drumRatchet(r,idx,tick){return !state.beatLock&&state.enabled&&state.x>45&&(r===2||r===1)&&rand(xNow(tick),160+r)<intensity(tick)*.17;}
 function swingOffset(tick,bpm){return (tick%2&&state.enabled)?(60/bpm/4)*(state.swing/100)*.48:0}
 function tempoScale(tick){if(!state.enabled)return 1;const drift=state.drift/100*.04;return 1/(1+drift*Math.sin(tick/67))}
 let audio=null,bus=null,send=null,delay=null,feedback=null,wet=null,noiseSrc=null,hissGain=null;
@@ -408,9 +493,9 @@ function init(ctx,compressor,distortion){if(bus||!ctx)return;audio=ctx;
 function syncEffects(){if(!audio)return;const t=audio.currentTime;const amount=state.enabled?1:0;wet.gain.setTargetAtTime(amount*(state.space/100)*.22,t,.08);feedback.gain.setTargetAtTime(clamp(.12+state.space/100*.3,0,.44),t,.12);
  const bpm=Number($('bpm').value)||125;delay.delayTime.setTargetAtTime(clamp(60/bpm*.75,.19,.8),t,.07);
  if(core.isPlaying())bus.gain.setTargetAtTime(amount*.63,t,.09);
- hissGain.gain.setTargetAtTime(core.isPlaying()?amount*state.y/100*.014:0,t,.2);
+ hissGain.gain.setTargetAtTime(core.isPlaying()?amount*state.tape/100*.012:0,t,.2);
 }
-function transport(on){if(!audio)return;const t=audio.currentTime;bus.gain.setTargetAtTime(on&&state.enabled?.63:0,t,.04);wet.gain.setTargetAtTime(on&&state.enabled?state.space/100*.22:0,t,.07);hissGain.gain.setTargetAtTime(on&&state.enabled?state.y/100*.014:0,t,.16)}
+function transport(on){if(!audio)return;const t=audio.currentTime;bus.gain.setTargetAtTime(on&&state.enabled?.63:0,t,.04);wet.gain.setTargetAtTime(on&&state.enabled?state.space/100*.22:0,t,.07);hissGain.gain.setTargetAtTime(on&&state.enabled?state.tape/100*.012:0,t,.16)}
 const harmony={
  circuit:[[36,39,43],[34,38,41],[31,35,38],[36,39,43]],
  fracture:[[38,41,45],[33,36,40],[36,38,43],[31,35,38]],
@@ -438,12 +523,150 @@ function padChord(tick,at,ctx){if(!state.enabled||state.pad===0||state.y===0||!b
  }
  noteCap++;
 }
-function tick(t,at,ctx){if(!state.enabled)return;
- if(t%64===0){padChord(t,at,ctx);const name=sectionName[section(t)];$('evoStatus').textContent='Journey: '+(state.journey?name:'Free play')+' · Bar '+(Math.floor(t/16)+1)+' · Evolving '+(state.freeze?'a frozen variation':'the groove');}
+function ghostNote(tick,at,ctx){
+ if(!audio||!bus||!state.enabled||state.ghost<=0||state.pad<=0)return;
+ const selection=harmony[state.scene]||harmony.circuit;
+ const chord=selection[Math.floor(tick/64)%4];
+ const midi=chord[Math.floor(tick/32)%chord.length]+24;
+ const freq=440*Math.pow(2,(midi-69)/12);
+ const out=ctx.createGain(),lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=1250+state.tape*13;
+ const osc=ctx.createOscillator(),osc2=ctx.createOscillator();osc.type='sine';osc2.type='triangle';osc.frequency.setValueAtTime(freq,at);osc2.frequency.setValueAtTime(freq*2,at);osc2.detune.value=(state.tape/100)*5;
+ const second=ctx.createGain();second.gain.value=.12;
+ osc.connect(lp);osc2.connect(second);second.connect(lp);lp.connect(out);out.connect(bus);
+ const level=(state.ghost/100)*(state.pad/100)*.12, hold=Math.max(.55,60/(Number($('bpm').value)||120)*2.5);
+ out.gain.setValueAtTime(.0001,at);out.gain.linearRampToValueAtTime(level,at+.045);out.gain.exponentialRampToValueAtTime(.0001,at+hold);
+ osc.start(at);osc2.start(at);osc.stop(at+hold+.05);osc2.stop(at+hold+.05);
+ osc.onended=()=>{for(const n of [osc,osc2,second,lp,out])try{n.disconnect()}catch{}};
 }
-window.AcidLabV3={getState:configState,loadState:load,transformNote:note,isDrumOn:drum,drumRatchet,toneAt,wow,swingOffset,tempoScale,initAudio:init,onTransport:transport,onTick:tick};
+function tick(t,at,ctx){if(!state.enabled)return;
+ if(t%64===0){padChord(t,at,ctx);
+ }
+ if(t%32===8)ghostNote(t,at,ctx);
+ if(t%64===0){const name=sectionName[section(t)];$('evoStatus').textContent='Journey: '+(state.journey?name:'Free play')+' · Bar '+(Math.floor(t/16)+1)+' · Evolving '+(state.freeze?'a frozen variation':'the groove');}
+}
+window.AcidLabV3={getState:configState,loadState:load,bassGain:()=>state.bass/100,isDrumMix:()=>state.beat/100,transformNote:note,isDrumOn:drum,drumRatchet,toneAt,wow,swingOffset,tempoScale,initAudio:init,onTransport:transport,onTick:tick};
 const auto=(()=>{try{return JSON.parse(localStorage.getItem('acid-lab-v2-autosave'))}catch{return null}})();if(auto?.performance)load(auto.performance);else show();
 $('bpm').addEventListener('input',syncEffects);
+})();
+</script>
+<script>
+(()=>{'use strict';
+ const dlg=document.getElementById('clearDialog');const open=document.getElementById('clear');
+ open.onclick=()=>{if(typeof dlg.showModal==='function')dlg.showModal();else dlg.setAttribute('open','')};
+ const close=()=>dlg.close?dlg.close():dlg.removeAttribute('open');
+ document.getElementById('clearCancel').onclick=close;
+ document.getElementById('clearBass').onclick=()=>{window.AcidLab?.clearBass();close()};
+ document.getElementById('clearDrums').onclick=()=>{window.AcidLabV2?.clearDrums();close()};
+ document.getElementById('clearAll').onclick=()=>{window.AcidLab?.clearBass();window.AcidLabV2?.clearDrums();close()};
+ dlg.addEventListener('click',event=>{if(event.target===dlg)close()});
+})();
+</script>
+
+<script>
+/* Acid Lab 3.2 — standalone extension: three independent node-based sound sources */
+(() => {
+'use strict';
+const $=id=>document.getElementById(id);
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,Number(n)||0));
+let ctx=null, destination=null, fmBus=null, dustBus=null, sampleBus=null, delay=null, feedback=null, delayWet=null;
+let sampleBuffer=null, sampleName='', loading=false, activePreview=null;
+const settings={fm:26,fmTone:'haze',dust:8,dustTone:'dusty',sample:35,every:16,url:''};
+const noiseCache=new WeakMap();
+const decodedCache=new WeakMap();
+const status=msg=>{$('sonicStatus').textContent=msg};
+const key='acid-lab-3.2-sonic-preferences';
+try { const data=JSON.parse(localStorage.getItem(key)||'null');if(data&&typeof data==='object'){
+ for(const name of ['fm','dust','sample'])if(Number.isFinite(data[name]))settings[name]=clamp(data[name],0,100);
+ if(['haze','bells','metal'].includes(data.fmTone))settings.fmTone=data.fmTone;
+ if(['soft','dusty','bright'].includes(data.dustTone))settings.dustTone=data.dustTone;
+ if([0,16,64].includes(data.every))settings.every=data.every;
+ if(typeof data.url==='string' && data.url.length<1500)settings.url=data.url;
+}}catch(e){}
+function save(){try{localStorage.setItem(key,JSON.stringify(settings))}catch(e){}}
+function initAudio(audio,masterInput){
+ if(ctx)return;ctx=audio;destination=masterInput;
+ fmBus=ctx.createGain();fmBus.gain.value=.9;fmBus.connect(masterInput);
+ dustBus=ctx.createGain();dustBus.gain.value=.65;dustBus.connect(masterInput);
+ sampleBus=ctx.createGain();sampleBus.gain.value=.7;sampleBus.connect(masterInput);
+ // Filtered echo is intentionally subtle, and isolated from the original effects.
+ delay=ctx.createDelay(1.3);delay.delayTime.value=.48;
+ feedback=ctx.createGain();feedback.gain.value=.21;delayWet=ctx.createGain();delayWet.gain.value=.14;
+ fmBus.connect(delay);delay.connect(delayWet);delayWet.connect(masterInput);delay.connect(feedback);feedback.connect(delay);
+}
+function createFMVoice(audio,{at=audio.currentTime,frequency=165,ratio=1.005,index=.32,attack=1.4,duration=4,release=2,level=.09}={}){
+ const carrier=audio.createOscillator(),modulator=audio.createOscillator();
+ const depth=audio.createGain(),filter=audio.createBiquadFilter(),output=audio.createGain();
+ carrier.type='sine';modulator.type='sine';carrier.frequency.setValueAtTime(frequency,at);modulator.frequency.setValueAtTime(frequency*ratio,at);
+ depth.gain.setValueAtTime(frequency*ratio*index,at);depth.gain.linearRampToValueAtTime(frequency*ratio*index*.72,at+duration);
+ modulator.connect(depth);depth.connect(carrier.frequency);carrier.connect(filter);
+ filter.type='lowpass';filter.frequency.value=4800;filter.connect(output);
+ const end=at+Math.max(.05,duration),stopAt=end+Math.max(.1,release)+.06;
+ output.gain.setValueAtTime(.00001,at);output.gain.linearRampToValueAtTime(Math.max(.00001,level),at+Math.min(attack,duration));
+ output.gain.setValueAtTime(Math.max(.00001,level),end);output.gain.linearRampToValueAtTime(.00001,stopAt-.03);
+ carrier.start(at);modulator.start(at);carrier.stop(stopAt);modulator.stop(stopAt);
+ carrier.onended=()=>{carrier.disconnect();modulator.disconnect();depth.disconnect();filter.disconnect();output.disconnect()};
+ return {output,stop(when=audio.currentTime){const w=Math.max(audio.currentTime,when);output.gain.cancelScheduledValues(w);output.gain.setTargetAtTime(.00001,w,.03)}};
+}
+function noiseBuffer(audio){if(noiseCache.has(audio))return noiseCache.get(audio);const b=audio.createBuffer(1,audio.sampleRate,audio.sampleRate);const d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;noiseCache.set(audio,b);return b}
+function createNoiseHit(audio,{at=audio.currentTime,cutoff=2200,filterType='bandpass',duration=.15,level=.12}={}){
+ const src=audio.createBufferSource(),filter=audio.createBiquadFilter(),output=audio.createGain();
+ src.buffer=noiseBuffer(audio);src.loop=true;filter.type=filterType;filter.frequency.setValueAtTime(cutoff,at);filter.Q.value=.65;
+ output.gain.setValueAtTime(.00001,at);output.gain.linearRampToValueAtTime(Math.max(.00001,level),at+.004);
+ output.gain.exponentialRampToValueAtTime(.00001,at+Math.max(.02,duration));
+ src.connect(filter);filter.connect(output);src.start(at);src.stop(at+Math.max(.02,duration)+.04);
+ src.onended=()=>{src.disconnect();filter.disconnect();output.disconnect()};return {output,stop(when=audio.currentTime){output.gain.cancelScheduledValues(when);output.gain.setTargetAtTime(.00001,when,.015)}};
+}
+async function loadSample(audio,url){
+ if(!url.startsWith('https://') && !url.startsWith('http://') && !url.startsWith('./') && !url.startsWith('/'))throw Error('Use a secure HTTPS URL or a file hosted on this site.');
+ let cache=decodedCache.get(audio);if(!cache){cache=new Map();decodedCache.set(audio,cache)}
+ if(!cache.has(url)){cache.set(url,(async()=>{const r=await fetch(url,{mode:'cors'});if(!r.ok)throw Error('HTTP '+r.status);const raw=await r.arrayBuffer();if(raw.byteLength>24*1024*1024)throw Error('Choose an audio file smaller than 24 MB');return audio.decodeAudioData(raw)})())}
+ try{return await cache.get(url)}catch(e){cache.delete(url);throw e}
+}
+function createSampleVoice(audio,buffer,{at=audio.currentTime,rate=1,level=.25,loop=false}={}){
+ const src=audio.createBufferSource(),output=audio.createGain();src.buffer=buffer;src.loop=loop;src.playbackRate.setValueAtTime(rate,at);output.gain.value=level;
+ src.connect(output);src.start(at);let ended=false;src.onended=()=>{ended=true;src.disconnect();output.disconnect()};
+ return {output,stop(when=audio.currentTime){if(ended)return;ended=true;try{src.stop(Math.max(audio.currentTime,when))}catch(e){}}};
+}
+function scheduleFM(t,at){
+ if(!fmBus||settings.fm<1||t%64!==0)return;
+ const scene=window.AcidLabV3?.getState?.().scene||'afterglow';
+ const notes={circuit:[43,39,36,41],fracture:[38,41,45,36],afterglow:[41,45,38,43],deep:[36,33,38,34]};
+ const root=(notes[scene]||notes.afterglow)[Math.floor(t/64)%4];
+ const frequency=440*Math.pow(2,(root+24-69)/12);
+ const char={haze:[1.005,.22,2.0,8,3.5],bells:[2.01,1.65,.28,2.7,3.3],metal:[2.37,.7,1.1,4.5,4.5]}[settings.fmTone];
+ const v=createFMVoice(ctx,{at,frequency,ratio:char[0],index:char[1],attack:char[2],duration:char[3],release:char[4],level:settings.fm/100*.11});v.output.connect(fmBus);
+}
+function scheduleDust(t,at){
+ if(!dustBus||settings.dust<1||t%4!==2)return; // only on the off-beats
+ const p={soft:[1200,.16],dusty:[2600,.12],bright:[7600,.075]}[settings.dustTone];
+ const v=createNoiseHit(ctx,{at,cutoff:p[0],duration:p[1],filterType:settings.dustTone==='bright'?'highpass':'bandpass',level:settings.dust/100*.12});v.output.connect(dustBus);
+}
+function scheduleSample(t,at){if(!sampleBuffer||!sampleBus||!settings.every||t%settings.every!==0||settings.sample<1)return;
+ const voice=createSampleVoice(ctx,sampleBuffer,{at,level:settings.sample/100*.42});voice.output.connect(sampleBus);
+}
+function onTick(t,at,audio){if(audio!==ctx)return;scheduleFM(t,at);scheduleDust(t,at);scheduleSample(t,at)}
+function ensureAudio(){const a=window.AcidLab?.getAudio?.();if(!a?.audio){status('Press Play once to unlock the iPhone sound engine, then try again.');return false}initAudio(a.audio,a.compressor);return true}
+async function wake(){if(!ensureAudio())return false;await ctx.resume();return true}
+function syncUI(){
+ for(const [id,val] of [['FMLevel',settings.fm],['DustLevel',settings.dust],['SampleLevel',settings.sample]]){$('sonic'+id).value=val;$('sonic'+id+'Val').textContent=val+'%'}
+ $('sonicFMTone').value=settings.fmTone;$('sonicDustColor').value=settings.dustTone;$('sonicSampleEvery').value=String(settings.every);$('sonicSampleURL').value=settings.url;
+}
+for(const [id,keyName] of [['sonicFMLevel','fm'],['sonicDustLevel','dust'],['sonicSampleLevel','sample']])$(id).addEventListener('input',e=>{settings[keyName]=clamp(e.target.value,0,100);syncUI();save()});
+$('sonicFMTone').addEventListener('change',e=>{settings.fmTone=e.target.value;save()});
+$('sonicDustColor').addEventListener('change',e=>{settings.dustTone=e.target.value;save()});
+$('sonicSampleEvery').addEventListener('change',e=>{settings.every=Number(e.target.value);save()});
+$('sonicFMAudition').onclick=async()=>{if(!await wake())return;const preset={haze:[1.005,.25],bells:[2.01,1.7],metal:[2.37,.8]}[settings.fmTone];const v=createFMVoice(ctx,{frequency:220,ratio:preset[0],index:preset[1],attack:.06,duration:1.3,release:1.2,level:.12});v.output.connect(fmBus);status('FM audition · '+settings.fmTone)};
+$('sonicDustAudition').onclick=async()=>{if(!await wake())return;const v=createNoiseHit(ctx,{filterType:'bandpass',cutoff:settings.dustTone==='bright'?7600:settings.dustTone==='soft'?900:2600,duration:.3,level:.16});v.output.connect(dustBus);status('Noise audition · '+settings.dustTone)};
+async function acceptBuffer(bytes,label){if(!await wake())return;const b=await ctx.decodeAudioData(bytes);if(b.duration>180)throw Error('Use a sample shorter than 3 minutes');sampleBuffer=b;sampleName=label;$('sonicSampleName').textContent=label+' · '+b.duration.toFixed(1)+' seconds';status('Sample ready: '+label+'. It will trigger on the selected beat interval.');}
+$('sonicSampleFile').onchange=async e=>{const file=e.target.files?.[0];if(!file)return;
+ if(file.size>24*1024*1024){status('Choose an audio file smaller than 24 MB.');return}
+ try{status('Decoding '+file.name+'…');await acceptBuffer(await file.arrayBuffer(),file.name)}catch(error){status('Could not decode this recording: '+error.message)}};
+$('sonicLoadURL').onclick=async()=>{const url=$('sonicSampleURL').value.trim();if(!url){status('Enter an audio URL first.');return}if(!await wake())return;
+ try{status('Loading URL…');const b=await loadSample(ctx,url);if(b.duration>180)throw Error('Use a sample shorter than 3 minutes');sampleBuffer=b;sampleName=url.split('/').pop().slice(0,80)||'Web sample';settings.url=url;save();$('sonicSampleName').textContent=sampleName+' · '+b.duration.toFixed(1)+' seconds';status('Sample loaded. If the site blocks cross-origin audio, download it and use Choose a recording instead.')}catch(e){status('Could not load URL: '+e.message+'. Try saving the recording to Files instead.')}};
+$('sonicSamplePreview').onclick=async()=>{if(!sampleBuffer){status('Choose a recording or load a URL first.');return}if(!await wake())return;
+ if(activePreview)activePreview.stop();const v=createSampleVoice(ctx,sampleBuffer,{level:Math.max(.01,settings.sample/100*.42)});v.output.connect(sampleBus);activePreview=v;status('Previewing '+sampleName)};
+syncUI();
+window.AcidLabExtra={initAudio,onTick,createFMVoice,createNoiseHit,loadSample,createSampleVoice};
 })();
 </script>
 </body></html>
