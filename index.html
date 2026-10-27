@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0c1015">
-<title>Orbit / Acid Sequencer — Interactive Prototype</title>
+<title>Orbit / Acid Lab 2 — Interactive Music Studio</title>
 <style>
 :root{--bg:#0c1015;--surface:#151c24;--raised:#1b252e;--border:#2b3841;--text:#eef5ef;--muted:#8da39c;--gold:#eed390;--mint:#79d4b6;--coral:#fc906f;--blue:#8db8f7;--shadow:rgba(0,0,0,.25)}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% -20%,#23332f 0,transparent 50%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;letter-spacing:.005em}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
@@ -15,11 +15,45 @@ h1{font-size:clamp(36px,5vw,65px);line-height:1.02;margin:5px 0 12px;letter-spac
 .noteeditor{display:flex;align-items:center;justify-content:space-between;gap:13px;background:#11191e;border:1px solid #2b3b3d;border-radius:13px;padding:14px;margin-top:7px;flex-wrap:wrap}.stepview small{display:block;text-transform:uppercase;color:#809b8d;letter-spacing:.12em;font-size:9px;margin-bottom:4px}.stepview strong{font-size:17px}.notecontrol{display:flex;align-items:center;gap:8px}.keybtn{border:1px solid #4a6157;color:#e5f8e7;background:#273a31;border-radius:8px;width:31px;height:32px}.toggle{border:1px solid #3b4951;background:#202b32;color:#a2b6ad;border-radius:8px;padding:8px 11px;font-size:11px}.toggle.on{background:#554631;border-color:#ac8750;color:#ffe1a8}.instruction{font-size:11px;color:#92a69b;margin:12px 0 0;line-height:1.55}
 .rightstack{display:grid;gap:18px}.viz{height:150px;margin:18px 0 5px;position:relative;background:#101820;border:1px solid #26353e;border-radius:11px;padding:8px}.viz canvas{display:block;width:100%;height:100%}.vizlabel{position:absolute;top:12px;left:15px;font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#a6bfb1;background:#101820dd;padding:3px 5px}.twoviz{display:grid;grid-template-columns:1fr 1fr;gap:10px}.twoviz .viz{height:120px;margin:5px 0 0}.controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 16px;margin-top:23px}.control{background:#131d23;border:1px solid #293940;padding:15px;border-radius:12px}.ctop{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#a2b4ae}.ctop strong{font-size:14px;color:#e3f3e8;letter-spacing:0;font-variant-numeric:tabular-nums}.control input{width:100%;margin:16px 0 4px}.control p{font-size:10px;color:#7b948b;margin:7px 0 0;line-height:1.4}input[type=range]{accent-color:var(--mint);cursor:pointer}.orange{accent-color:var(--coral)!important}.summary{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:19px;color:#8da39c;font-size:11px;border-top:1px solid #2a383f;padding-top:18px}.summary strong{color:#bed7ca}.note{font-size:12px;color:#a9bdb2;margin-top:18px;line-height:1.65}.footer{margin:21px 0;color:#718981;font-size:11px;line-height:1.6}.sr{position:absolute;left:-99999px}
 @media(max-width:840px){main{padding:20px 15px 40px}.workspace{grid-template-columns:minmax(0,1fr)}.rightstack{grid-template-columns:1fr}.panel{padding:18px}.transport{padding:12px}.status{margin-left:0}.topright .hint{display:none}.flag{display:none}}@media(max-width:420px){.controls{gap:11px}.control{padding:11px}.noteeditor{gap:10px}.softbtn{padding:11px 9px}.orbit-wrap{margin-top:3px}.brand-name{font-size:14px}.transport .separate{display:none}.preset{font-size:11px;padding:9px 10px}}
+
+/* Acid Lab v2: touchscreen rhythm studio */
+.v2-kicker{font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:var(--mint);font-weight:800}
+.v2-section{margin-top:18px;padding:22px;border:1px solid #34444b;background:linear-gradient(150deg,#18242a,#101a21);border-radius:19px;box-shadow:0 8px 28px #0002}
+.v2-head{display:flex;gap:18px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.v2-head h2{font-size:22px;letter-spacing:-.04em;margin:7px 0 6px}
+.v2-head p{margin:0 0 12px;font-size:12px;color:#9ab1a7;line-height:1.6;max-width:570px}
+.v2-actions{display:flex;gap:8px;flex-wrap:wrap}
+.v2-btn{border:1px solid #42584f;background:#22342d;color:#d7f6e2;border-radius:10px;padding:10px 13px;font-size:12px;font-weight:700;min-height:42px}
+.v2-btn:hover{background:#2a4839}.v2-btn:active{transform:scale(.98)}.v2-btn.primary{background:#78d4b4;border-color:#78d4b4;color:#0d261c}
+.v2-grid-scroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;border:1px solid #34464b;border-radius:13px;margin-top:12px;background:#0f1b21}
+.v2-grid{min-width:775px;padding:13px;display:grid;grid-template-columns:116px repeat(16,minmax(31px,1fr));gap:6px;align-items:center}
+.v2-grid .v2-beatnum{text-align:center;font:700 10px ui-monospace,SFMono-Regular,monospace;color:#718e83;padding:7px 0}
+.v2-track-label{display:flex;flex-direction:column;gap:3px;font-size:12px;font-weight:750;align-self:stretch;justify-content:center;position:sticky;left:0;z-index:2;background:#0f1b21}
+.v2-track-label small{font-size:10px;color:#74968c;font-weight:500}
+.v2-step{appearance:none;background:#263840;border:1px solid #3b5159;min-height:39px;border-radius:8px;color:transparent;touch-action:manipulation;cursor:pointer;position:relative}
+.v2-step.v2-bar{border-left:2px solid #657b73}.v2-step.on{background:var(--track-color);border-color:var(--track-color);box-shadow:inset 0 -6px 0 #0002}
+.v2-step.active{outline:2px solid white;outline-offset:1px;box-shadow:0 0 14px #ffffff55}
+.v2-step:focus-visible{outline:3px solid white;outline-offset:2px}
+.v2-step.on:after{content:'';position:absolute;inset:11px;border-radius:50%;background:#081c1d99}
+.v2-foot{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;color:#829e94;font-size:11px;margin-top:12px}
+.v2-mixer{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin-top:14px}
+.v2-channel{border:1px solid #2c4145;background:#101d23;border-radius:13px;padding:15px;min-width:0}
+.v2-channel h3{margin:0 0 10px;font-size:13px;color:#e3f4e9;letter-spacing:-.01em}
+.v2-channel label{display:flex;justify-content:space-between;gap:6px;font-size:11px;color:#a9c2b7;margin-top:13px;align-items:center}
+.v2-channel input[type=range]{width:100%;margin:8px 0 0;min-height:26px}
+.v2-channel select,.v2-project input,.v2-project select{width:100%;min-width:0;border:1px solid #3a5157;border-radius:9px;background:#19282d;color:#e8f6ef;padding:11px 10px;font:inherit;font-size:12px;min-height:42px}
+.v2-project{display:grid;grid-template-columns:minmax(125px,2fr) minmax(135px,2fr) auto auto auto;gap:9px;align-items:end;margin-top:17px}
+.v2-project>div>label{font-size:11px;color:#9db5aa;display:block;margin-bottom:6px}
+.v2-status{font-size:11px;color:#a4dabb;min-height:18px;margin-top:10px;line-height:1.5}
+.v2-divider{border-top:1px solid #2e4347;margin-top:19px;padding-top:17px}
+.v2-health{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#bddacb;border:1px solid #3a5a4b;padding:6px 9px;border-radius:100px;background:#20372f}
+@media(max-width:700px){.v2-mixer{grid-template-columns:repeat(2,minmax(0,1fr))}.v2-channel:last-child{grid-column:1/-1}.v2-project{grid-template-columns:1fr 1fr}.v2-project .v2-actioncol{grid-column:auto}.v2-project .v2-actioncol button{width:100%}}
+@media(max-width:420px){.v2-section{padding:15px}.v2-mixer{gap:8px}.v2-channel{padding:11px}.v2-project{grid-template-columns:1fr 1fr;gap:8px}.v2-btn{padding:9px}.v2-grid-scroll{margin-left:-3px;margin-right:-3px}}
 </style>
 </head>
 <body>
 <main>
-<header class="top"><div class="brand"><div class="brandicon">◎</div><div><div class="brand-name">Orbit / Acid</div><div class="brand-sub">Experimental sequencer</div></div></div><div class="topright"><span class="hint">WEB AUDIO · REAL-TIME SYNTHESIS</span><span class="flag">INTERACTIVE PROTOTYPE</span></div></header>
+<header class="top"><div class="brand"><div class="brandicon">◎</div><div><div class="brand-name">Orbit / Acid</div><div class="brand-sub">Experimental sequencer</div></div></div><div class="topright"><span class="hint">WEB AUDIO · REAL-TIME SYNTHESIS</span><span class="flag">VERSION 2 · RHYTHM STUDIO</span></div></header>
 <h1>Shape the rhythm.<br><span>Hear the orbit.</span></h1>
 <p class="subtitle">Two independent looping patterns. One evolving acid sound. Change notes, reshape the filter, or let unequal loop lengths create rhythms that don't repeat the same way twice.</p>
 <section class="transport" aria-label="Playback controls">
@@ -47,14 +81,29 @@ h1{font-size:clamp(36px,5vw,65px);line-height:1.02;margin:5px 0 12px;letter-spac
 <div class="control"><div class="ctop"><label for="drive">Drive</label><strong id="driveVal">20%</strong></div><input id="drive" class="orange" type="range" min="0" max="100" value="20"><p>Distortion and harmonic warmth</p></div>
 <div class="control"><div class="ctop"><label for="volume">Volume</label><strong id="volumeVal">65%</strong></div><input id="volume" type="range" min="0" max="100" value="65"><p>Output level; starts conservatively</p></div>
 </div><div class="summary"><span><strong id="modeName">Twin 303s</strong> · Preset 01</span><span>SAW · LOW-PASS · ENVELOPE</span></div></section>
-</div></div><p class="footer">Original, browser-based proof of concept inspired by the uploaded acid-sequencer recording. Turn your device volume down before pressing Play. Audio requires a tap to start and plays only while this page is open.</p>
+</div></div>
+<section class="v2-section" id="drumStudio" aria-label="Drum machine">
+  <div class="v2-head"><div><div class="v2-kicker">04 / Rhythm Engine</div><h2>Build the beat.</h2><p>Four synthesized drum voices, sixteen steps, perfectly synchronized to the orbit. Tap the lit blocks to compose while the music plays.</p></div><div class="v2-actions"><button type="button" class="v2-btn" id="v2Fill">↝ New groove</button><button type="button" class="v2-btn" id="v2Clear">Clear drums</button></div></div>
+  <div class="v2-grid-scroll" tabindex="0" aria-label="Scroll horizontally to edit all sixteen steps"><div id="v2Grid" class="v2-grid" role="group" aria-label="Drum step sequencer"></div></div>
+  <div class="v2-foot"><span>Steps 1, 5, 9 and 13 start each beat. Scroll sideways on your phone for all 16.</span><span class="v2-health">● Live synthesis</span></div>
+</section>
+<section class="v2-section" id="projectStudio" aria-label="Sound mixer and saved projects">
+  <div class="v2-head"><div><div class="v2-kicker">05 / Sound Studio</div><h2>Mix. Save. Return.</h2><p>Each bass ring has its own timbre and level. Patterns auto-recover on this device, and you can save named projects.</p></div></div>
+  <div class="v2-mixer">
+    <div class="v2-channel"><h3 style="color:#fc906f">● Outer bass</h3><label for="v2Wave0">Waveform</label><select id="v2Wave0"><option value="sawtooth">Sawtooth</option><option value="square">Square</option><option value="triangle">Triangle</option></select><label for="v2Tone0">Brightness <span id="v2Tone0Value">100%</span></label><input id="v2Tone0" type="range" min="30" max="175" step="5" value="100"><label for="v2Level0">Level <span id="v2Level0Value">100%</span></label><input id="v2Level0" type="range" min="0" max="150" value="100"></div>
+    <div class="v2-channel"><h3 style="color:#8db8f7">● Inner bass</h3><label for="v2Wave1">Waveform</label><select id="v2Wave1"><option value="square">Square</option><option value="sawtooth">Sawtooth</option><option value="triangle">Triangle</option></select><label for="v2Tone1">Brightness <span id="v2Tone1Value">100%</span></label><input id="v2Tone1" type="range" min="30" max="175" step="5" value="100"><label for="v2Level1">Level <span id="v2Level1Value">100%</span></label><input id="v2Level1" type="range" min="0" max="150" value="100"></div>
+    <div class="v2-channel"><h3 style="color:#eed390">● Drums</h3><label for="v2DrumLevel">Drum level <span id="v2DrumLevelValue">65%</span></label><input id="v2DrumLevel" type="range" min="0" max="100" value="65"><p style="font-size:11px;color:#92aca2;line-height:1.6;margin:10px 0 0">Analog-style kick, snare, hi-hat and clap. Fully generated in your browser; no samples or server needed.</p></div>
+  </div>
+  <div class="v2-divider"><div class="v2-kicker">Project library</div><div class="v2-project"><div><label for="v2Name">Project name</label><input id="v2Name" maxlength="48" placeholder="My acid groove" autocomplete="off"></div><div><label for="v2Saved">Saved projects</label><select id="v2Saved"><option value="">Choose a project…</option></select></div><div class="v2-actioncol"><button type="button" class="v2-btn primary" id="v2Save">Save</button></div><div class="v2-actioncol"><button type="button" class="v2-btn" id="v2Load">Load</button></div><div class="v2-actioncol"><button type="button" class="v2-btn" id="v2Delete">Delete</button></div></div><div id="v2Status" class="v2-status" role="status" aria-live="polite">Changes automatically recover when you return on this device.</div></div>
+</section>
+<p class="footer">Original, browser-based proof of concept inspired by the uploaded acid-sequencer recording. Turn your device volume down before pressing Play. Audio requires a tap to start and plays only while this page is open.</p>
 </main>
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id);const svg=$('orbit');const NS='http://www.w3.org/2000/svg';let preset='twin',playing=false,audio=null,master=null,analyser=null,compressor=null,distortion=null,clock=null,nextNoteTime=0,tick=0,selected={ring:0,index:0},lastNoteAt=-1000,currentHz=1000,voiceCount=0,updateNeeded=false;const scales={twin:[36,39,41,43,46,48,51,53],distorted:[33,36,38,40,43,45,48],breaks:[38,41,43,45,50,53],minimal:[36,43,46,48]};let patterns=[];
 const noteName=midi=>{const names=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];return names[(midi%12+12)%12]+(Math.floor(midi/12)-1)};const hz=midi=>440*Math.pow(2,(midi-69)/12);
 const config={twin:{name:'Twin 303s',lengths:[16,12],steps:[[0,3,6,8,11,14],[0,2,5,7,10]],bpm:130,values:{cutoff:53,reso:74,env:68,decay:240,drive:20,volume:65}},distorted:{name:'Distorted Acid',lengths:[16,8],steps:[[0,2,3,6,8,11,12,14],[0,4,6]],bpm:138,values:{cutoff:68,reso:89,env:81,decay:290,drive:82,volume:55}},breaks:{name:'Acid Breaks',lengths:[12,16],steps:[[0,2,4,7,9,11],[0,3,5,8,10,12,15]],bpm:125,values:{cutoff:44,reso:61,env:71,decay:170,drive:30,volume:65}},minimal:{name:'Minimal Pulse',lengths:[16,10],steps:[[0,4,7,12],[0,5]],bpm:110,values:{cutoff:35,reso:80,env:42,decay:420,drive:13,volume:68}}};
-function choosePreset(id){preset=id;const c=config[id];const notes=scales[id];patterns=c.lengths.map((len,ring)=>Array.from({length:len},(_,i)=>({on:c.steps[ring].includes(i),note:notes[(i*3+ring*2)%notes.length]+(ring?12:0),accent:(i+ring)%4===0,slide:(i+ring)%7===0})));Object.keys(c.values).forEach(k=>$(k).value=c.values[k]);$('bpm').value=c.bpm;selected={ring:0,index:0};tick=0;document.querySelectorAll('.preset').forEach(b=>b.classList.toggle('selected',b.dataset.preset===id));$('modeName').textContent=c.name;$('polymeter').textContent=c.lengths.join(' × ')+' steps';refreshControls();refreshEditor();renderOrbit()}
+function choosePreset(id){preset=id;const c=config[id];const notes=scales[id];patterns=c.lengths.map((len,ring)=>Array.from({length:len},(_,i)=>({on:c.steps[ring].includes(i),note:notes[(i*3+ring*2)%notes.length]+(ring?12:0),accent:(i+ring)%4===0,slide:(i+ring)%7===0})));Object.keys(c.values).forEach(k=>$(k).value=c.values[k]);$('bpm').value=c.bpm;selected={ring:0,index:0};tick=0;document.querySelectorAll('.preset').forEach(b=>b.classList.toggle('selected',b.dataset.preset===id));$('modeName').textContent=c.name;$('polymeter').textContent=c.lengths.join(' × ')+' steps';refreshControls();refreshEditor();renderOrbit();window.AcidLabV2?.onPreset?.(id)}
 function refreshControls(){const cutoff=calcCutoff();$('bpmText').textContent=$('bpm').value;$('cutoffVal').textContent=cutoff>=1000?(cutoff/1000).toFixed(1)+' kHz':Math.round(cutoff)+' Hz';['reso','env','drive','volume'].forEach(id=>$(id+'Val').textContent=$(id).value+'%');$('decayVal').textContent=$('decay').value+' ms';if(master)master.gain.setTargetAtTime(Number($('volume').value)/100*.29,audio.currentTime,.02);if(distortion)distortion.curve=curve(Number($('drive').value))}
 function calcCutoff(){const x=Number($('cutoff').value)/100;return 105*Math.pow(8000/105,x)}
 function create(tag,attrs,parent=svg){const el=document.createElementNS(NS,tag);for(const [k,v]of Object.entries(attrs))el.setAttribute(k,v);parent.appendChild(el);return el}
@@ -65,9 +114,9 @@ $('down').onclick=()=>editPitch(-1);$('up').onclick=()=>editPitch(1);function ed
 for(const flag of ['accent','slide'])$(flag).onclick=()=>{const s=patterns[selected.ring][selected.index];s[flag]=!s[flag];refreshEditor();renderOrbit()};
 function curve(drive){const amount=Math.max(0,Number(drive));const n=1024,arr=new Float32Array(n),k=amount*4;for(let i=0;i<n;i++){const x=i*2/n-1;arr[i]=amount===0?x:(1+k)*x/(1+k*Math.abs(x))}return arr}
 function initAudio(){if(audio)return;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)throw Error('This browser does not support Web Audio');audio=new AC();analyser=audio.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=.75;compressor=audio.createDynamicsCompressor();compressor.threshold.value=-16;compressor.knee.value=12;compressor.ratio.value=5;compressor.attack.value=.005;compressor.release.value=.22;master=audio.createGain();master.gain.value=.29*Number($('volume').value)/100;distortion=audio.createWaveShaper();distortion.oversample='2x';distortion.curve=curve($('drive').value);distortion.connect(compressor);compressor.connect(master);master.connect(analyser);analyser.connect(audio.destination)}
-let latestNote=36;
-function sound(step,time,ring){const decay=Number($('decay').value)/1000;const freq=hz(step.note);const osc=audio.createOscillator();osc.type=ring===0?'sawtooth':'square';const filter=audio.createBiquadFilter();filter.type='lowpass';filter.Q.value=.65+Number($('reso').value)/100*20;const envelope=audio.createGain();envelope.gain.value=0;const mix=audio.createGain();mix.gain.value=ring===0?.54:.26;osc.connect(filter);filter.connect(envelope);envelope.connect(mix);mix.connect(distortion);let f0=calcCutoff();const env=Number($('env').value)/100;const peak=Math.min(11500,f0*(1+env*13));const dur=Math.max(.07,decay);osc.frequency.setValueAtTime(step.slide?Math.max(45,freq*.82):freq,time);if(step.slide)osc.frequency.exponentialRampToValueAtTime(freq,time+Math.min(dur*.6,.115));filter.frequency.setValueAtTime(Math.max(60,peak),time);filter.frequency.exponentialRampToValueAtTime(Math.max(60,f0),time+dur*.95);const amp=step.accent?.82:.57;envelope.gain.setValueAtTime(.0001,time);envelope.gain.exponentialRampToValueAtTime(amp,time+.009);envelope.gain.exponentialRampToValueAtTime(.0001,time+dur);osc.start(time);osc.stop(time+dur+.03);osc.onended=()=>{osc.disconnect();filter.disconnect();envelope.disconnect();mix.disconnect()};latestNote=step.note;currentHz=peak;lastNoteAt=performance.now();voiceCount++;setTimeout(()=>{if(playing){$('currentNote').textContent='NOTE '+noteName(latestNote);renderOrbit()}},Math.max(0,(time-audio.currentTime)*1000))}
-function schedule(){if(!playing||!audio)return;while(nextNoteTime<audio.currentTime+.12){for(let r=0;r<patterns.length;r++){const st=patterns[r][tick%patterns[r].length];if(st.on)sound(st,nextNoteTime,r)}tick++;nextNoteTime+=60/Number($('bpm').value)/4}renderOrbit()}
+let latestNote=36;const previousPitch=[0,0];
+function sound(step,time,ring){const decay=Number($('decay').value)/1000;const freq=hz(step.note);const osc=audio.createOscillator();const voice=window.AcidLabV2?.getVoice?.(ring);osc.type=voice?.wave||(ring===0?'sawtooth':'square');const filter=audio.createBiquadFilter();filter.type='lowpass';filter.Q.value=.65+Number($('reso').value)/100*20;const envelope=audio.createGain();envelope.gain.value=0;const mix=audio.createGain();mix.gain.value=(ring===0?.54:.26)*(voice?.level??1);osc.connect(filter);filter.connect(envelope);envelope.connect(mix);mix.connect(distortion);let f0=Math.max(80,calcCutoff()*(voice?.tone??1));const env=Number($('env').value)/100;const peak=Math.min(11500,f0*(1+env*13));const dur=Math.max(.07,decay);osc.frequency.setValueAtTime(step.slide&&previousPitch[ring]?previousPitch[ring]:freq,time);if(step.slide&&previousPitch[ring])osc.frequency.exponentialRampToValueAtTime(freq,time+Math.min(dur*.6,.115));previousPitch[ring]=freq;filter.frequency.setValueAtTime(Math.max(60,peak),time);filter.frequency.exponentialRampToValueAtTime(Math.max(60,f0),time+dur*.95);const amp=step.accent?.82:.57;envelope.gain.setValueAtTime(.0001,time);envelope.gain.exponentialRampToValueAtTime(amp,time+.009);envelope.gain.exponentialRampToValueAtTime(.0001,time+dur);osc.start(time);osc.stop(time+dur+.03);osc.onended=()=>{osc.disconnect();filter.disconnect();envelope.disconnect();mix.disconnect()};latestNote=step.note;currentHz=peak;lastNoteAt=performance.now();voiceCount++;setTimeout(()=>{if(playing){$('currentNote').textContent='NOTE '+noteName(latestNote);renderOrbit()}},Math.max(0,(time-audio.currentTime)*1000))}
+function schedule(){if(!playing||!audio)return;while(nextNoteTime<audio.currentTime+.12){for(let r=0;r<patterns.length;r++){const st=patterns[r][tick%patterns[r].length];if(st.on)sound(st,nextNoteTime,r)}window.AcidLabV2?.scheduleDrums?.(nextNoteTime,tick,audio,compressor);tick++;nextNoteTime+=60/Number($('bpm').value)/4}renderOrbit()}
 async function togglePlay(){try{initAudio();await audio.resume();playing=!playing;if(playing){nextNoteTime=audio.currentTime+.045;tick=0;clock=setInterval(schedule,25);schedule();$('play').textContent='■ Stop';$('play').setAttribute('aria-label','Stop sequencer');$('led').classList.add('live');$('status').textContent='Playing live'}else{clearInterval(clock);$('play').textContent='▶ Play';$('play').setAttribute('aria-label','Start sequencer');$('led').classList.remove('live');$('status').textContent='Stopped';$('currentNote').textContent='NOTE —'}renderOrbit()}catch(err){$('status').textContent='Audio unavailable: '+err.message;console.error(err)}}$('play').onclick=togglePlay;
 $('random').onclick=()=>{patterns.forEach((steps,r)=>steps.forEach((st,i)=>{st.on=Math.random()<(r===0?.44:.33);st.note=scales[preset][Math.floor(Math.random()*scales[preset].length)]+(r?12:0);st.accent=Math.random()<.25;st.slide=Math.random()<.17}));refreshEditor();renderOrbit()};$('reset').onclick=()=>choosePreset(preset);document.querySelectorAll('.preset').forEach(b=>b.onclick=()=>choosePreset(b.dataset.preset));['bpm','cutoff','reso','env','decay','drive','volume'].forEach(id=>$(id).addEventListener('input',refreshControls));
 const wave=$('wave'),spectrum=$('spectrum'),filterCanvas=$('filter');function ctx(canvas){const dpi=Math.min(2,window.devicePixelRatio||1),w=Math.max(10,canvas.clientWidth),h=Math.max(10,canvas.clientHeight);if(canvas.width!==Math.round(w*dpi)||canvas.height!==Math.round(h*dpi)){canvas.width=Math.round(w*dpi);canvas.height=Math.round(h*dpi)}const c=canvas.getContext('2d');c.setTransform(dpi,0,0,dpi,0,0);return {c,w,h}}
@@ -75,7 +124,111 @@ function backdrop(c,w,h){c.clearRect(0,0,w,h);c.strokeStyle='#29413d';c.lineWidt
 function draw(){requestAnimationFrame(draw);{const {c,w,h}=ctx(wave);backdrop(c,w,h);c.beginPath();c.lineWidth=1.8;c.strokeStyle='#79d4b6';if(analyser&&playing){const arr=new Uint8Array(analyser.fftSize);analyser.getByteTimeDomainData(arr);for(let i=0;i<arr.length;i+=3){const x=i/(arr.length-1)*w;const y=(arr[i]/255)*h;if(i===0)c.moveTo(x,y);else c.lineTo(x,y)}}else{for(let i=0;i<=w;i+=2){const v=Math.sin(i*.06)*.05+Math.sin(i*.13)*.02;const y=h*.5+v*h;if(i===0)c.moveTo(i,y);else c.lineTo(i,y)}}c.stroke()}
 {const {c,w,h}=ctx(spectrum);backdrop(c,w,h);let data=null;if(analyser&&playing){data=new Uint8Array(analyser.frequencyBinCount);analyser.getByteFrequencyData(data)}const bars=42,gap=2,bw=w/bars;for(let i=0;i<bars;i++){const idx=Math.floor(Math.pow(i/(bars-1),1.8)*Math.min(470,data?data.length:470));const v=data?data[idx]/255:(.04+Math.sin(i*.45)*.025);c.fillStyle=i>27?'#cb9874':'#8db8f7';c.fillRect(i*bw,h-Math.max(2,v*h*.95),(bw-gap),Math.max(2,v*h*.95))}}
 {const {c,w,h}=ctx(filterCanvas);backdrop(c,w,h);c.beginPath();c.lineWidth=1.9;c.strokeStyle='#eed390';const cutoff=calcCutoff(),env=Number($('env').value)/100,decay=Number($('decay').value)/1000;let age=Math.max(0,(performance.now()-lastNoteAt)/1000);for(let i=0;i<w;i++){let t=i/w*.75;let v=age<1.5?Math.exp(-((t+age%(.75))/.12)*(.24/decay)):.35;let brightness=Math.log(Math.max(100,cutoff*(1+env*6*v))/100)/Math.log(80);let y=h-(.12+brightness*.74)*h;if(i===0)c.moveTo(i,y);else c.lineTo(i,y)}c.stroke()}}
+window.AcidLab={
+ getState(){return {preset,patterns:patterns.map(row=>row.map(st=>({...st}))),controls:Object.fromEntries(['bpm','cutoff','reso','env','decay','drive','volume'].map(id=>[id,Number($(id).value)]))}},
+ loadState(state){if(!state||!config[state.preset]||!Array.isArray(state.patterns)||state.patterns.length!==2)throw Error('Invalid sequencer pattern');choosePreset(state.preset);const lengths=config[state.preset].lengths;patterns=state.patterns.map((row,r)=>Array.from({length:lengths[r]},(_,i)=>{const old=row[i]||{};return {on:!!old.on,note:Math.round(Math.max(24,Math.min(84,Number(old.note)||36))),accent:!!old.accent,slide:!!old.slide}}));for(const id of ['bpm','cutoff','reso','env','decay','drive','volume']){const ctl=$(id),raw=Number(state.controls?.[id]);if(Number.isFinite(raw))ctl.value=Math.max(Number(ctl.min),Math.min(Number(ctl.max),raw))}tick=0;selected={ring:0,index:0};refreshControls();refreshEditor();renderOrbit()},
+ getAudio(){initAudio();return {audio,compressor}},isPlaying(){return playing}
+};
 choosePreset('twin');requestAnimationFrame(draw);
 })();
+</script>
+<script>
+
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const core = window.AcidLab;
+if (!core) { console.error('Acid Lab V2: original instrument unavailable'); return; }
+const keys = { auto: 'acid-lab-v2-autosave', projects: 'acid-lab-v2-projects' };
+const voices = [{wave:'sawtooth',tone:100,level:100},{wave:'square',tone:100,level:100}];
+const names = ['Kick','Snare','Closed hat','Clap'];
+const colors = ['#fc906f','#8db8f7','#eed390','#79d4b6'];
+const colors2 = ['KICK','SNARE','HAT','CLAP'];
+const active = [[],[],[],[]];
+let tracks = [[],[],[],[]], drumLevel = 65, drumBus = null, noiseBuffer = null, lastBar = -1;
+let saveTimer = null, ignoreChanges = false;
+const clamp = (x,lo,hi) => Math.min(hi,Math.max(lo,Number(x)||0));
+const presets = {
+  twin:[[0,4,8,12],[4,12],[2,6,10,14],[12]],
+  distorted:[[0,3,4,7,8,11,12,14],[4,12],[1,3,5,7,9,11,13,15],[4,12]],
+  breaks:[[0,3,7,8,10,14],[4,12],[2,6,10,13],[12]],
+  minimal:[[0,8],[4,12],[2,6,10,14],[]]
+};
+function presetDrums(preset) { const map = presets[preset] || presets.twin; tracks = map.map(indices=>Array.from({length:16},(_,i)=>indices.includes(i))); drawGrid(); scheduleSave(); }
+function drawGrid() {
+ const el=$('v2Grid'); const oldFocus=document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.step : null;
+ el.replaceChildren();
+ const top=document.createElement('div');top.className='v2-track-label';top.textContent='DRUMS / 16';el.append(top);
+ for(let i=0;i<16;i++){const h=document.createElement('div');h.className='v2-beatnum';h.textContent=String(i+1).padStart(2,'0');el.append(h)}
+ tracks.forEach((row,r)=>{
+  const label=document.createElement('div');label.className='v2-track-label';label.textContent=names[r];const sub=document.createElement('small');sub.textContent=colors2[r];label.append(sub);el.append(label);
+  row.forEach((isOn,i)=>{
+   const b=document.createElement('button');b.type='button';b.className='v2-step'+(isOn?' on':'')+(i%4===0?' v2-bar':'');b.style.setProperty('--track-color',colors[r]);b.dataset.step=r+'-'+i;
+   b.setAttribute('aria-label',names[r]+' step '+(i+1)+(isOn?' on':' off'));b.setAttribute('aria-pressed',String(isOn));
+   b.addEventListener('click',()=>{tracks[r][i]=!tracks[r][i];b.classList.toggle('on',tracks[r][i]);b.setAttribute('aria-pressed',String(tracks[r][i]));b.setAttribute('aria-label',names[r]+' step '+(i+1)+(tracks[r][i]?' on':' off'));scheduleSave()});
+   el.append(b);
+  });
+ });
+ if(oldFocus){const wanted=Array.from(el.querySelectorAll('button')).find(b=>b.dataset.step===oldFocus);if(wanted)wanted.focus()}
+}
+function projectState(){return {schema:2,core:core.getState(),tracks:tracks.map(row=>row.slice()),voices:voices.map(v=>({...v})),drumLevel};}
+function applyState(s){
+ if(!s || s.schema!==2 || !s.core || !Array.isArray(s.tracks)||s.tracks.length!==4)throw new Error('This project is not a valid Acid Lab 2 project');
+ ignoreChanges=true;
+ try {
+  core.loadState(s.core);
+  tracks=s.tracks.map(t=>Array.from({length:16},(_,i)=>Boolean(t[i])));
+  for(let i=0;i<2;i++){const v=s.voices&&s.voices[i]||{};voices[i].wave=['square','sawtooth','triangle'].includes(v.wave)?v.wave:(i?'square':'sawtooth');voices[i].tone=clamp(v.tone??100,30,175);voices[i].level=clamp(v.level??100,0,150)}
+  drumLevel=clamp(s.drumLevel??65,0,100);
+  syncMixer();drawGrid();
+ } finally {ignoreChanges=false}
+ scheduleSave();
+}
+function readJSON(key, fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
+function scheduleSave(){if(ignoreChanges)return;clearTimeout(saveTimer);saveTimer=setTimeout(()=>{try{localStorage.setItem(keys.auto,JSON.stringify(projectState()))}catch(e){message('Local saving is unavailable in this browser: '+e.message)}},250)}
+function message(t){$('v2Status').textContent=t}
+function syncMixer(){for(let r=0;r<2;r++){for(const id of ['Wave','Tone','Level']){const el=$('v2'+id+r);if(el)el.value=voices[r][id.toLowerCase()]};$('v2Tone'+r+'Value').textContent=voices[r].tone+'%';$('v2Level'+r+'Value').textContent=voices[r].level+'%'}$('v2DrumLevel').value=drumLevel;$('v2DrumLevelValue').textContent=drumLevel+'%';if(drumBus && core.getAudio().audio)drumBus.gain.setTargetAtTime(drumLevel/100*.44,core.getAudio().audio.currentTime,.02)}
+function fillGroove(){tracks.forEach((row,r)=>{for(let i=0;i<16;i++){row[i] = r===0 ? (i%4===0||Math.random()<.13) : r===1 ? (i===4||i===12||Math.random()<.06) : r===2 ? Math.random()<.58 : Math.random()<.12}});drawGrid();scheduleSave()}
+function refreshProjects(){const saved=readJSON(keys.projects,{});const select=$('v2Saved');const previously=select.value;select.replaceChildren();const placeholder=document.createElement('option');placeholder.value='';placeholder.textContent='Choose a project…';select.append(placeholder);Object.keys(saved).sort().forEach(name=>{const opt=document.createElement('option');opt.value=name;opt.textContent=name;select.append(opt)});if(saved[previously])select.value=previously}
+function bindUI(){
+ $('v2Fill').onclick=fillGroove;$('v2Clear').onclick=()=>{tracks.forEach(row=>row.fill(false));drawGrid();scheduleSave()};
+ for(let r=0;r<2;r++){
+  $('v2Wave'+r).addEventListener('change',e=>{voices[r].wave=e.target.value;scheduleSave()});
+  for(const p of ['Tone','Level'])$('v2'+p+r).addEventListener('input',e=>{voices[r][p.toLowerCase()]=Number(e.target.value);$('v2'+p+r+'Value').textContent=e.target.value+'%';scheduleSave()});
+ }
+ $('v2DrumLevel').addEventListener('input',e=>{drumLevel=Number(e.target.value);syncMixer();scheduleSave()});
+ $('v2Save').onclick=()=>{
+  const name=$('v2Name').value.trim();if(!name){message('Enter a project name first.');$('v2Name').focus();return}
+  const projects=readJSON(keys.projects,{});projects[name]=projectState();try{localStorage.setItem(keys.projects,JSON.stringify(projects));refreshProjects();$('v2Saved').value=name;message('Saved “'+name+'” on this device.');scheduleSave()}catch(e){message('Could not save this project: '+e.message)}
+ };
+ $('v2Load').onclick=()=>{const name=$('v2Saved').value;const projects=readJSON(keys.projects,{});if(!name||!projects[name]){message('Choose a saved project first.');return}try{applyState(projects[name]);$('v2Name').value=name;message('Loaded “'+name+'”.')}catch(e){message('Could not open project: '+e.message)}};
+ $('v2Delete').onclick=()=>{const name=$('v2Saved').value;if(!name){message('Choose a saved project to delete.');return}const projects=readJSON(keys.projects,{});delete projects[name];try{localStorage.setItem(keys.projects,JSON.stringify(projects));refreshProjects();message('Deleted saved project “'+name+'”. Current music is unchanged.')}catch(e){message('Could not delete: '+e.message)}};
+ // Listen in capture phase so the original controls can respond before the autosave timer fires.
+ document.querySelector('main').addEventListener('click',event=>{if(event.target.closest('#v2Save,#v2Load,#v2Delete'))return;scheduleSave()});
+ document.querySelector('main').addEventListener('input',()=>scheduleSave());
+}
+function noise(ctx){if(noiseBuffer&&noiseBuffer.sampleRate===ctx.sampleRate)return noiseBuffer;noiseBuffer=ctx.createBuffer(1,Math.ceil(ctx.sampleRate*1.0),ctx.sampleRate);const arr=noiseBuffer.getChannelData(0);for(let i=0;i<arr.length;i++)arr[i]=Math.random()*2-1;return noiseBuffer}
+function makeNoise(ctx,dest,t,duration,filterType,freq,peak){
+ const src=ctx.createBufferSource();src.buffer=noise(ctx);const filter=ctx.createBiquadFilter();filter.type=filterType;filter.frequency.setValueAtTime(freq,t);const gain=ctx.createGain();gain.gain.setValueAtTime(.0001,t);gain.gain.exponentialRampToValueAtTime(Math.max(.0002,peak),t+.003);gain.gain.exponentialRampToValueAtTime(.0001,t+duration);src.connect(filter);filter.connect(gain);gain.connect(dest);src.start(t);src.stop(t+duration+.015);src.onended=()=>{src.disconnect();filter.disconnect();gain.disconnect()};return gain;
+}
+function fireDrum(r,t,ctx){if(!drumBus || drumLevel===0)return;
+ if(r===0){const osc=ctx.createOscillator();osc.type='sine';const g=ctx.createGain();osc.frequency.setValueAtTime(155,t);osc.frequency.exponentialRampToValueAtTime(47,t+.13);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.98,t+.004);g.gain.exponentialRampToValueAtTime(.0001,t+.39);osc.connect(g);g.connect(drumBus);osc.start(t);osc.stop(t+.41);osc.onended=()=>{osc.disconnect();g.disconnect()};}
+ else if(r===1){makeNoise(ctx,drumBus,t,.19,'highpass',1400,.48);const o=ctx.createOscillator(),g=ctx.createGain();o.type='triangle';o.frequency.setValueAtTime(185,t);o.frequency.exponentialRampToValueAtTime(108,t+.1);g.gain.setValueAtTime(.32,t);g.gain.exponentialRampToValueAtTime(.0001,t+.13);o.connect(g);g.connect(drumBus);o.start(t);o.stop(t+.14);o.onended=()=>{o.disconnect();g.disconnect()}}
+ else if(r===2){makeNoise(ctx,drumBus,t,.066,'highpass',6500,.27)}
+ else {const g=makeNoise(ctx,drumBus,t,.18,'bandpass',1700,.4);for(const offset of [.014,.029,.052]){g.gain.setValueAtTime(.0001,t+offset);g.gain.exponentialRampToValueAtTime(.29-offset*3,t+offset+.003);g.gain.exponentialRampToValueAtTime(.0001,t+offset+.012)}}
+}
+function ensureDrums(ctx,dest){if(drumBus)return;drumBus=ctx.createGain();drumBus.gain.value=drumLevel/100*.44;drumBus.connect(dest)}
+function highlight(i){$('v2Grid').querySelectorAll('.v2-step').forEach((btn,n)=>btn.classList.toggle('active',n%16===i))}
+window.AcidLabV2={
+ getVoice(r){const v=voices[r];return {wave:v.wave,tone:v.tone/100,level:v.level/100}},
+ scheduleDrums(time,tick,ctx,dest){ensureDrums(ctx,dest);const i=tick%16;for(let r=0;r<4;r++)if(tracks[r][i])fireDrum(r,time,ctx);setTimeout(()=>{if(core.isPlaying())highlight(i);else highlight(-1)},Math.max(0,(time-ctx.currentTime)*1000))},
+ onPreset(p){presetDrums(p)}
+};
+presetDrums(core.getState().preset);
+bindUI();syncMixer();refreshProjects();
+const auto=readJSON(keys.auto,null);if(auto){try{applyState(auto);message('Recovered your last session on this device.')}catch(e){message('Ready to make music. Previously saved session could not be recovered.')}}
+window.addEventListener('pagehide',()=>{clearTimeout(saveTimer);try{localStorage.setItem(keys.auto,JSON.stringify(projectState()))}catch{}});
+})();
+
 </script>
 </body></html>
