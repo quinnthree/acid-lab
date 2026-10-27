@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0c1015">
-<title>Orbit / Acid Lab 2 — Interactive Music Studio</title>
+<title>Orbit / Acid Lab 3 — Evolving Sound Studio</title>
 <style>
 :root{--bg:#0c1015;--surface:#151c24;--raised:#1b252e;--border:#2b3841;--text:#eef5ef;--muted:#8da39c;--gold:#eed390;--mint:#79d4b6;--coral:#fc906f;--blue:#8db8f7;--shadow:rgba(0,0,0,.25)}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% -20%,#23332f 0,transparent 50%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;letter-spacing:.005em}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
@@ -49,22 +49,90 @@ h1{font-size:clamp(36px,5vw,65px);line-height:1.02;margin:5px 0 12px;letter-spac
 .v2-health{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#bddacb;border:1px solid #3a5a4b;padding:6px 9px;border-radius:100px;background:#20372f}
 @media(max-width:700px){.v2-mixer{grid-template-columns:repeat(2,minmax(0,1fr))}.v2-channel:last-child{grid-column:1/-1}.v2-project{grid-template-columns:1fr 1fr}.v2-project .v2-actioncol{grid-column:auto}.v2-project .v2-actioncol button{width:100%}}
 @media(max-width:420px){.v2-section{padding:15px}.v2-mixer{gap:8px}.v2-channel{padding:11px}.v2-project{grid-template-columns:1fr 1fr;gap:8px}.v2-btn{padding:9px}.v2-grid-scroll{margin-left:-3px;margin-right:-3px}}
+
+/* Touch reliability patch: iOS must not treat instrument controls as selectable text. */
+button, .preset, .toggle, .keybtn, .step, svg g[role="button"] {
+  -webkit-user-select:none; user-select:none; -webkit-touch-callout:none;
+  touch-action:manipulation; -webkit-tap-highlight-color:transparent;
+}
+button { min-height:44px; }
+.preset { min-height:46px; display:inline-flex; align-items:center; justify-content:center; }
+.preset:active, .softbtn:active, .keybtn:active, .toggle:active { filter:brightness(1.3); transform:scale(.98); }
+.orbit-wrap svg { -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; }
+.orbit-wrap svg g[role="button"] { cursor:pointer; }
+
+/* Version 3: live generative performance controls */
+.evo-panel{margin:20px 0;padding:23px;border:1px solid #436257;border-radius:21px;background:radial-gradient(ellipse at 0 0,#233a36,#17232b 56%,#101a22);box-shadow:0 14px 38px #0003}
+.evo-hero{display:flex;flex-wrap:wrap;align-items:start;justify-content:space-between;gap:14px}
+.evo-hero h2{font-size:clamp(23px,3vw,32px);margin:7px 0 5px;letter-spacing:-.05em}.evo-hero p{font-size:12px;color:#abc1b8;line-height:1.6;max-width:670px;margin:0 0 13px}
+.evo-scenes{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 19px}
+.evo-scene{border:1px solid #4b6860;background:#20332e;color:#cee9da;padding:11px 14px;border-radius:999px;min-height:44px;font-weight:730;font-size:12px;touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.evo-scene.selected{color:#142921;background:#83d9b9;border-color:#83d9b9}
+.evo-main{display:grid;grid-template-columns:minmax(270px,.8fr) minmax(320px,1.2fr);gap:21px}
+.evo-pad-wrap{padding:14px;border:1px solid #39544d;background:#111e23;border-radius:17px;min-width:0}
+.evo-pad-title{display:flex;justify-content:space-between;align-items:center;gap:8px;color:#b7d7c8;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.13em}
+.evo-pad{height:225px;margin:12px 1px 11px;position:relative;border:1px solid #557b73;border-radius:14px;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;overflow:hidden;cursor:crosshair;background:linear-gradient(0deg,#0e2126bf,#0e212600),radial-gradient(ellipse at 87% 15%,#976c5366,transparent 63%),radial-gradient(ellipse at 12% 84%,#4c82736b,transparent 66%),#17262b}
+.evo-pad:before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent calc(50% - .5px),#ffffff21 50%,transparent calc(50% + .5px)),linear-gradient(0deg,transparent calc(50% - .5px),#ffffff21 50%,transparent calc(50% + .5px));pointer-events:none}
+.evo-pad:focus-visible{outline:2px solid #f2d39b;outline-offset:3px}
+.evo-cursor{position:absolute;left:24%;top:72%;width:36px;height:36px;transform:translate(-50%,-50%);border:2px solid white;border-radius:50%;background:#84e2c3b0;box-shadow:0 0 0 7px #7ce4c521,0 0 26px #73dab499;pointer-events:none}
+.evo-cursor:after{content:'';position:absolute;inset:13px;background:#132b24;border-radius:50%}
+.evo-axis{display:flex;justify-content:space-between;color:#8ea99f;font-size:10px;letter-spacing:.03em}.evo-pad-bottom{font-size:10px;color:#78958b;margin:8px 0 0;line-height:1.5}
+.evo-settings{min-width:0}.evo-switches{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.evo-button{border:1px solid #3e5a52;background:#22342e;color:#d7f4e4;border-radius:10px;padding:10px 12px;font-size:12px;min-height:44px;font-weight:750;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.evo-button[aria-pressed="true"]{border-color:#b9995a;background:#4a3c26;color:#ffe4ad}
+.evo-button:active,.evo-scene:active{transform:scale(.97)}
+.evo-control-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.evo-control{min-width:0;padding:13px;background:#111d23;border:1px solid #2c4644;border-radius:12px}
+.evo-control label{display:flex;justify-content:space-between;gap:6px;font-size:11px;color:#afc8bc;font-weight:730}.evo-control label span{color:#e1eddc}
+.evo-control input{width:100%;margin:14px 0 5px;touch-action:pan-x}.evo-control small{font-size:10px;color:#809d90;line-height:1.4;display:block}
+.evo-status{font-size:12px;color:#c5e1d3;line-height:1.65;border-top:1px solid #3a524a;padding-top:14px;margin-top:15px}
+.evo-pill{font-size:10px;border:1px solid #4c6b60;color:#c5e0d4;padding:8px 10px;border-radius:999px;background:#1a332d}
+@media(max-width:860px){.evo-main{grid-template-columns:1fr}.evo-panel{padding:17px}.evo-pad{height:210px}}
+@media(max-width:420px){.evo-pad{height:180px}.evo-control{padding:10px}.evo-scenes{gap:6px}.evo-scene{padding:9px 11px;font-size:11px}.evo-panel{margin:13px 0;padding:14px}}
+
 </style>
 </head>
 <body>
 <main>
-<header class="top"><div class="brand"><div class="brandicon">◎</div><div><div class="brand-name">Orbit / Acid</div><div class="brand-sub">Experimental sequencer</div></div></div><div class="topright"><span class="hint">WEB AUDIO · REAL-TIME SYNTHESIS</span><span class="flag">VERSION 2 · RHYTHM STUDIO</span></div></header>
+<header class="top"><div class="brand"><div class="brandicon">◎</div><div><div class="brand-name">Orbit / Acid</div><div class="brand-sub">Experimental sequencer</div></div></div><div class="topright"><span class="hint">WEB AUDIO · REAL-TIME SYNTHESIS</span><span class="flag">VERSION 3 · EVOLVING STUDIO</span></div></header>
 <h1>Shape the rhythm.<br><span>Hear the orbit.</span></h1>
-<p class="subtitle">Two independent looping patterns. One evolving acid sound. Change notes, reshape the filter, or let unequal loop lengths create rhythms that don't repeat the same way twice.</p>
+<p class="subtitle">Two bass orbits, four drum voices, and a generative performance engine. Shape living rhythms, warm harmonies, tape drift, and evolving textures as you play.</p>
 <section class="transport" aria-label="Playback controls">
 <button id="play" class="play" aria-label="Start sequencer">▶ Play</button>
 <button id="random" class="softbtn" aria-label="Randomize sequences">↝ Randomize</button>
 <button id="reset" class="softbtn" aria-label="Reset preset">↺ Reset</button>
 <div class="separate"></div>
-<div class="bpm"><div><label for="bpm">Tempo</label><div><strong id="bpmText">130</strong> <label>BPM</label></div></div><input id="bpm" type="range" min="75" max="165" value="130" aria-label="Tempo in beats per minute"></div>
+<div class="bpm"><div><label for="bpm">Tempo</label><div><strong id="bpmText">130</strong> <label>BPM</label></div></div><input id="bpm" type="range" min="55" max="200" value="130" aria-label="Tempo in beats per minute"></div>
 <div class="status"><span id="led" class="led"></span><span id="status">Ready to play</span></div>
 </section>
 <div class="presets" role="group" aria-label="Style presets"><span class="preset-label">Sound experiments</span><button class="preset selected" data-preset="twin">01 · Twin 303s</button><button class="preset" data-preset="distorted">02 · Distorted Acid</button><button class="preset" data-preset="breaks">03 · Acid Breaks</button><button class="preset" data-preset="minimal">04 · Minimal Pulse</button></div>
+
+<section class="evo-panel" id="evolution" aria-label="Generative performance engine">
+  <div class="evo-hero"><div><div class="v2-kicker">06 / Evolution engine</div><h2>From loops to living music.</h2><p>Perform with controlled variation, evolving chords, tape character, rhythmic fills and a 16-bar arrangement. Every change follows the current groove instead of replacing it with noise.</p></div><span class="evo-pill" id="evoSceneStatus">Circuit · Evolving</span></div>
+  <div class="evo-scenes" role="group" aria-label="Performance scenes">
+    <button type="button" class="evo-scene selected" data-scene="circuit">◉ Circuit</button>
+    <button type="button" class="evo-scene" data-scene="fracture">✳ Fracture</button>
+    <button type="button" class="evo-scene" data-scene="afterglow">◌ Afterglow</button>
+    <button type="button" class="evo-scene" data-scene="deep">✦ Deep Space</button>
+  </div>
+  <div class="evo-main">
+    <div class="evo-pad-wrap"><div class="evo-pad-title"><span>Performance pad</span><span id="evoXYReadout">24 / 28</span></div>
+      <div id="evoPad" class="evo-pad" role="slider" aria-label="Performance pad. Left/right changes rhythmic mutation; up/down changes texture" aria-valuemin="0" aria-valuemax="100" aria-valuenow="24" tabindex="0"><div id="evoCursor" class="evo-cursor"></div></div>
+      <div class="evo-axis"><span>← Familiar groove</span><span>Unpredictable →</span></div><div class="evo-pad-bottom">Touch or drag: sideways changes rhythmic variation; upward adds atmosphere. Keyboard: arrow keys move the point.</div>
+    </div>
+    <div class="evo-settings">
+      <div class="evo-switches"><button type="button" id="evoEnabled" class="evo-button" aria-pressed="true">◉ Evolution ON</button><button type="button" id="evoJourney" class="evo-button" aria-pressed="true">◈ Journey ON</button><button type="button" id="evoFreeze" class="evo-button" aria-pressed="false">❄ Freeze variation</button><button type="button" id="evoPhrase" class="evo-button">↝ New variation</button><button type="button" id="evoTap" class="evo-button">Tap tempo</button></div>
+      <div class="evo-control-grid">
+        <div class="evo-control"><label for="evoSwing">Groove / swing <span id="evoSwingVal">12%</span></label><input type="range" id="evoSwing" min="0" max="70" value="12"><small>Push offbeat steps later</small></div>
+        <div class="evo-control"><label for="evoDrift">Tempo drift <span id="evoDriftVal">1%</span></label><input type="range" id="evoDrift" min="0" max="100" value="1"><small>Slow ±4% tempo breathing</small></div>
+        <div class="evo-control"><label for="evoPadLevel">Chord atmosphere <span id="evoPadLevelVal">23%</span></label><input type="range" id="evoPadLevel" min="0" max="100" value="23"><small>Warm, slowly changing harmonies</small></div>
+        <div class="evo-control"><label for="evoSpace">Delay / space <span id="evoSpaceVal">16%</span></label><input type="range" id="evoSpace" min="0" max="100" value="16"><small>Echoes and subtle tape motion</small></div>
+      </div>
+      <div class="evo-status" id="evoStatus" role="status" aria-live="polite">Ready · Journey: Intro · A little difference each time around.</div>
+    </div>
+  </div>
+</section>
+
 <div class="workspace">
 <section class="panel"><div class="panelhead"><div><div class="eyebrow">01 / Pattern engine</div><h2>Polyrhythmic orbits</h2></div><span id="polymeter" class="tiny">16 × 12 steps</span></div><div class="swatches"><span><i class="dot" style="background:var(--coral)"></i>Outer sequence</span><span><i class="dot" style="background:var(--blue)"></i>Inner sequence</span></div>
 <div class="orbit-wrap"><svg id="orbit" viewBox="0 0 500 500" role="img" aria-label="Interactive circular note sequencer with two rings"></svg></div>
@@ -108,16 +176,44 @@ function refreshControls(){const cutoff=calcCutoff();$('bpmText').textContent=$(
 function calcCutoff(){const x=Number($('cutoff').value)/100;return 105*Math.pow(8000/105,x)}
 function create(tag,attrs,parent=svg){const el=document.createElementNS(NS,tag);for(const [k,v]of Object.entries(attrs))el.setAttribute(k,v);parent.appendChild(el);return el}
 function renderOrbit(){svg.innerHTML='';create('circle',{cx:250,cy:250,r:229,class:'orbit-subguide'});for(const r of [184,125])create('circle',{cx:250,cy:250,r,class:'orbit-guide'});create('circle',{cx:250,cy:250,r:73,class:'orbit-subguide'});const stepNow=playing?tick:-1;
-patterns.forEach((steps,ring)=>{const radius=ring===0?184:125;const color=ring===0?'#fc906f':'#8db8f7';const iNow=stepNow<0?-1:((stepNow-1+steps.length*10000)%steps.length);const lineAngle=(iNow/(steps.length))*Math.PI*2-Math.PI/2;if(playing){create('line',{x1:250,y1:250,x2:250+Math.cos(lineAngle)*(radius+16),y2:250+Math.sin(lineAngle)*(radius+16),stroke:color,'stroke-width':1.8,opacity:.43})}steps.forEach((step,i)=>{const a=i/steps.length*Math.PI*2-Math.PI/2;const x=250+Math.cos(a)*radius,y=250+Math.sin(a)*radius;const isSelected=selected.ring===ring&&selected.index===i;const isPlaying=playing&&i===iNow;const rad=step.accent?10:7;const g=create('g',{'aria-label':`Ring ${ring+1} step ${i+1}: ${step.on?noteName(step.note):'off'}`,tabindex:'0',role:'button'});if(isSelected)create('circle',{cx:x,cy:y,r:18,stroke:'#eed390','stroke-width':1.8,fill:'#eed39014'},g);if(isPlaying)create('circle',{cx:x,cy:y,r:21,fill:'none',stroke:color,'stroke-width':2,opacity:.72},g);create('circle',{cx:x,cy:y,r:rad,fill:step.on?color:'#344b53',stroke:step.on?'#141b21':'#56666c','stroke-width':1.5,class:'step'},g);if(step.slide&&step.on)create('circle',{cx:x,cy:y,r:2.7,fill:'#101820'},g);const click=()=>{if(selected.ring===ring&&selected.index===i){step.on=!step.on}else{selected={ring,index:i};}refreshEditor();renderOrbit()};g.addEventListener('click',click);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();click()}})})});create('circle',{cx:250,cy:250,r:66,fill:'#1b292c',stroke:'#2d4347'});create('text',{x:250,y:236,class:'centerlabel'}).textContent='PLAYHEAD';create('text',{x:250,y:267,class:'center'}).textContent=playing?String(((tick-1+patterns[0].length*1000)%patterns[0].length)+1).padStart(2,'0'):'—';create('text',{x:250,y:292,class:'selected-note'}).textContent=$('currentNote').textContent.replace('NOTE ','')}
+patterns.forEach((steps,ring)=>{const radius=ring===0?184:125;const color=ring===0?'#fc906f':'#8db8f7';const iNow=stepNow<0?-1:((stepNow-1+steps.length*10000)%steps.length);const lineAngle=(iNow/(steps.length))*Math.PI*2-Math.PI/2;if(playing){create('line',{x1:250,y1:250,x2:250+Math.cos(lineAngle)*(radius+16),y2:250+Math.sin(lineAngle)*(radius+16),stroke:color,'stroke-width':1.8,opacity:.43})}steps.forEach((step,i)=>{const a=i/steps.length*Math.PI*2-Math.PI/2;const x=250+Math.cos(a)*radius,y=250+Math.sin(a)*radius;const isSelected=selected.ring===ring&&selected.index===i;const isPlaying=playing&&i===iNow;const rad=step.accent?10:7;const g=create('g',{'aria-label':`Ring ${ring+1} step ${i+1}: ${step.on?noteName(step.note):'off'}`,tabindex:'0',role:'button','data-ring':ring,'data-index':i});create('circle',{cx:x,cy:y,r:22,fill:'transparent',stroke:'none'},g);if(isSelected)create('circle',{cx:x,cy:y,r:18,stroke:'#eed390','stroke-width':1.8,fill:'#eed39014'},g);if(isPlaying)create('circle',{cx:x,cy:y,r:21,fill:'none',stroke:color,'stroke-width':2,opacity:.72},g);create('circle',{cx:x,cy:y,r:rad,fill:step.on?color:'#344b53',stroke:step.on?'#141b21':'#56666c','stroke-width':1.5,class:'step'},g);if(step.slide&&step.on)create('circle',{cx:x,cy:y,r:2.7,fill:'#101820'},g);const click=()=>{if(selected.ring===ring&&selected.index===i){step.on=!step.on}else{selected={ring,index:i};}refreshEditor();renderOrbit()};g.addEventListener('click',click);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();click()}})})});create('circle',{cx:250,cy:250,r:66,fill:'#1b292c',stroke:'#2d4347'});create('text',{x:250,y:236,class:'centerlabel'}).textContent='PLAYHEAD';create('text',{x:250,y:267,class:'center'}).textContent=playing?String(((tick-1+patterns[0].length*1000)%patterns[0].length)+1).padStart(2,'0'):'—';create('text',{x:250,y:292,class:'selected-note'}).textContent=$('currentNote').textContent.replace('NOTE ','')}
 function refreshEditor(){const step=patterns[selected.ring][selected.index];$('editingRing').textContent=selected.ring?'inner':'outer';$('editingStep').textContent=String(selected.index+1).padStart(2,'0');$('stepNote').textContent=noteName(step.note)+(step.on?' · ON':' · OFF');$('accent').classList.toggle('on',step.accent);$('slide').classList.toggle('on',step.slide)}
+// Capture touch on the stable SVG element. The individual note nodes are rebuilt
+// during playback, so traditional click listeners may disappear mid-gesture on iOS.
+const pendingTouches=new Map();let lastTouchHandled=0;
+function activateOrbitStep(r,i){
+  if(!patterns[r] || !patterns[r][i])return;
+  const step=patterns[r][i];
+  if(selected.ring===r && selected.index===i) step.on=!step.on;
+  else selected={ring:r,index:i};
+  refreshEditor();renderOrbit();
+}
+svg.addEventListener('pointerdown',e=>{
+  if(e.pointerType==='mouse')return;
+  const g=e.target.closest?.('g[data-ring][data-index]');
+  if(!g)return;
+  pendingTouches.set(e.pointerId,{ring:Number(g.dataset.ring),index:Number(g.dataset.index),x:e.clientX,y:e.clientY});
+  try{svg.setPointerCapture(e.pointerId)}catch(_){}
+});
+svg.addEventListener('pointerup',e=>{
+  const hit=pendingTouches.get(e.pointerId);if(!hit)return;
+  pendingTouches.delete(e.pointerId);
+  if(Math.hypot(e.clientX-hit.x,e.clientY-hit.y)>18)return;
+  lastTouchHandled=performance.now();
+  e.preventDefault();activateOrbitStep(hit.ring,hit.index);
+});
+svg.addEventListener('pointercancel',e=>pendingTouches.delete(e.pointerId));
+svg.addEventListener('click',e=>{
+  if(e.detail && performance.now()-lastTouchHandled<700){e.stopImmediatePropagation();e.preventDefault()}
+},true);
 $('down').onclick=()=>editPitch(-1);$('up').onclick=()=>editPitch(1);function editPitch(d){const s=patterns[selected.ring][selected.index];s.note=Math.min(84,Math.max(24,s.note+d));s.on=true;refreshEditor();renderOrbit()}
 for(const flag of ['accent','slide'])$(flag).onclick=()=>{const s=patterns[selected.ring][selected.index];s[flag]=!s[flag];refreshEditor();renderOrbit()};
 function curve(drive){const amount=Math.max(0,Number(drive));const n=1024,arr=new Float32Array(n),k=amount*4;for(let i=0;i<n;i++){const x=i*2/n-1;arr[i]=amount===0?x:(1+k)*x/(1+k*Math.abs(x))}return arr}
-function initAudio(){if(audio)return;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)throw Error('This browser does not support Web Audio');audio=new AC();analyser=audio.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=.75;compressor=audio.createDynamicsCompressor();compressor.threshold.value=-16;compressor.knee.value=12;compressor.ratio.value=5;compressor.attack.value=.005;compressor.release.value=.22;master=audio.createGain();master.gain.value=.29*Number($('volume').value)/100;distortion=audio.createWaveShaper();distortion.oversample='2x';distortion.curve=curve($('drive').value);distortion.connect(compressor);compressor.connect(master);master.connect(analyser);analyser.connect(audio.destination)}
+function initAudio(){if(audio)return;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)throw Error('This browser does not support Web Audio');audio=new AC();analyser=audio.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=.75;compressor=audio.createDynamicsCompressor();compressor.threshold.value=-16;compressor.knee.value=12;compressor.ratio.value=5;compressor.attack.value=.005;compressor.release.value=.22;master=audio.createGain();master.gain.value=.29*Number($('volume').value)/100;distortion=audio.createWaveShaper();distortion.oversample='2x';distortion.curve=curve($('drive').value);distortion.connect(compressor);compressor.connect(master);master.connect(analyser);analyser.connect(audio.destination);window.AcidLabV3?.initAudio?.(audio,compressor,distortion)}
 let latestNote=36;const previousPitch=[0,0];
-function sound(step,time,ring){const decay=Number($('decay').value)/1000;const freq=hz(step.note);const osc=audio.createOscillator();const voice=window.AcidLabV2?.getVoice?.(ring);osc.type=voice?.wave||(ring===0?'sawtooth':'square');const filter=audio.createBiquadFilter();filter.type='lowpass';filter.Q.value=.65+Number($('reso').value)/100*20;const envelope=audio.createGain();envelope.gain.value=0;const mix=audio.createGain();mix.gain.value=(ring===0?.54:.26)*(voice?.level??1);osc.connect(filter);filter.connect(envelope);envelope.connect(mix);mix.connect(distortion);let f0=Math.max(80,calcCutoff()*(voice?.tone??1));const env=Number($('env').value)/100;const peak=Math.min(11500,f0*(1+env*13));const dur=Math.max(.07,decay);osc.frequency.setValueAtTime(step.slide&&previousPitch[ring]?previousPitch[ring]:freq,time);if(step.slide&&previousPitch[ring])osc.frequency.exponentialRampToValueAtTime(freq,time+Math.min(dur*.6,.115));previousPitch[ring]=freq;filter.frequency.setValueAtTime(Math.max(60,peak),time);filter.frequency.exponentialRampToValueAtTime(Math.max(60,f0),time+dur*.95);const amp=step.accent?.82:.57;envelope.gain.setValueAtTime(.0001,time);envelope.gain.exponentialRampToValueAtTime(amp,time+.009);envelope.gain.exponentialRampToValueAtTime(.0001,time+dur);osc.start(time);osc.stop(time+dur+.03);osc.onended=()=>{osc.disconnect();filter.disconnect();envelope.disconnect();mix.disconnect()};latestNote=step.note;currentHz=peak;lastNoteAt=performance.now();voiceCount++;setTimeout(()=>{if(playing){$('currentNote').textContent='NOTE '+noteName(latestNote);renderOrbit()}},Math.max(0,(time-audio.currentTime)*1000))}
-function schedule(){if(!playing||!audio)return;while(nextNoteTime<audio.currentTime+.12){for(let r=0;r<patterns.length;r++){const st=patterns[r][tick%patterns[r].length];if(st.on)sound(st,nextNoteTime,r)}window.AcidLabV2?.scheduleDrums?.(nextNoteTime,tick,audio,compressor);tick++;nextNoteTime+=60/Number($('bpm').value)/4}renderOrbit()}
-async function togglePlay(){try{initAudio();await audio.resume();playing=!playing;if(playing){nextNoteTime=audio.currentTime+.045;tick=0;clock=setInterval(schedule,25);schedule();$('play').textContent='■ Stop';$('play').setAttribute('aria-label','Stop sequencer');$('led').classList.add('live');$('status').textContent='Playing live'}else{clearInterval(clock);$('play').textContent='▶ Play';$('play').setAttribute('aria-label','Start sequencer');$('led').classList.remove('live');$('status').textContent='Stopped';$('currentNote').textContent='NOTE —'}renderOrbit()}catch(err){$('status').textContent='Audio unavailable: '+err.message;console.error(err)}}$('play').onclick=togglePlay;
+function sound(step,time,ring){const decay=Number($('decay').value)/1000;const freq=hz(step.note);const osc=audio.createOscillator();const voice=window.AcidLabV2?.getVoice?.(ring);osc.type=voice?.wave||(ring===0?'sawtooth':'square');const filter=audio.createBiquadFilter();filter.type='lowpass';filter.Q.value=.65+Number($('reso').value)/100*20;const envelope=audio.createGain();envelope.gain.value=0;const mix=audio.createGain();mix.gain.value=(ring===0?.54:.26)*(voice?.level??1);osc.connect(filter);filter.connect(envelope);envelope.connect(mix);mix.connect(distortion);let f0=Math.max(80,calcCutoff()*(voice?.tone??1));const env=Number($('env').value)/100;const v3Engine=window.AcidLabV3;f0*=v3Engine?.toneAt?.(tick,ring)??1;const peak=Math.min(11500,f0*(1+env*13));const dur=Math.max(.07,decay);osc.frequency.setValueAtTime(step.slide&&previousPitch[ring]?previousPitch[ring]:freq,time);if(step.slide&&previousPitch[ring])osc.frequency.exponentialRampToValueAtTime(freq,time+Math.min(dur*.6,.115));previousPitch[ring]=freq;osc.detune.setValueAtTime(window.AcidLabV3?.wow?.(tick,ring)??0,time);filter.frequency.setValueAtTime(Math.max(60,peak),time);filter.frequency.exponentialRampToValueAtTime(Math.max(60,f0),time+dur*.95);const amp=step.accent?.82:.57;envelope.gain.setValueAtTime(.0001,time);envelope.gain.exponentialRampToValueAtTime(amp,time+.009);envelope.gain.exponentialRampToValueAtTime(.0001,time+dur);osc.start(time);osc.stop(time+dur+.03);osc.onended=()=>{osc.disconnect();filter.disconnect();envelope.disconnect();mix.disconnect()};latestNote=step.note;currentHz=peak;lastNoteAt=performance.now();voiceCount++;setTimeout(()=>{if(playing){$('currentNote').textContent='NOTE '+noteName(latestNote);renderOrbit()}},Math.max(0,(time-audio.currentTime)*1000))}
+function schedule(){if(!playing||!audio)return;while(nextNoteTime<audio.currentTime+.12){const v3=window.AcidLabV3;const bpm=Number($('bpm').value);const playAt=nextNoteTime+(v3?.swingOffset?.(tick,bpm)??0);v3?.onTick?.(tick,playAt,audio);for(let r=0;r<patterns.length;r++){const st=patterns[r][tick%patterns[r].length];const actual=v3?.transformNote?.(st,r,tick)??st;if(actual.on)sound(actual,playAt,r)}window.AcidLabV2?.scheduleDrums?.(playAt,tick,audio,compressor);tick++;nextNoteTime+=(60/bpm/4)*(v3?.tempoScale?.(tick)??1)}renderOrbit()}
+async function togglePlay(){try{initAudio();await audio.resume();playing=!playing;if(playing){nextNoteTime=audio.currentTime+.045;tick=0;clock=setInterval(schedule,25);schedule();$('play').textContent='■ Stop';$('play').setAttribute('aria-label','Stop sequencer');$('led').classList.add('live');$('status').textContent='Playing live';window.AcidLabV3?.onTransport?.(true)}else{clearInterval(clock);$('play').textContent='▶ Play';$('play').setAttribute('aria-label','Start sequencer');$('led').classList.remove('live');$('status').textContent='Stopped';window.AcidLabV3?.onTransport?.(false);$('currentNote').textContent='NOTE —'}renderOrbit()}catch(err){$('status').textContent='Audio unavailable: '+err.message;console.error(err)}}$('play').onclick=togglePlay;
 $('random').onclick=()=>{patterns.forEach((steps,r)=>steps.forEach((st,i)=>{st.on=Math.random()<(r===0?.44:.33);st.note=scales[preset][Math.floor(Math.random()*scales[preset].length)]+(r?12:0);st.accent=Math.random()<.25;st.slide=Math.random()<.17}));refreshEditor();renderOrbit()};$('reset').onclick=()=>choosePreset(preset);document.querySelectorAll('.preset').forEach(b=>b.onclick=()=>choosePreset(b.dataset.preset));['bpm','cutoff','reso','env','decay','drive','volume'].forEach(id=>$(id).addEventListener('input',refreshControls));
 const wave=$('wave'),spectrum=$('spectrum'),filterCanvas=$('filter');function ctx(canvas){const dpi=Math.min(2,window.devicePixelRatio||1),w=Math.max(10,canvas.clientWidth),h=Math.max(10,canvas.clientHeight);if(canvas.width!==Math.round(w*dpi)||canvas.height!==Math.round(h*dpi)){canvas.width=Math.round(w*dpi);canvas.height=Math.round(h*dpi)}const c=canvas.getContext('2d');c.setTransform(dpi,0,0,dpi,0,0);return {c,w,h}}
 function backdrop(c,w,h){c.clearRect(0,0,w,h);c.strokeStyle='#29413d';c.lineWidth=.5;for(let i=1;i<5;i++){let y=i*h/5;c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke()}for(let i=1;i<10;i++){let x=i*w/10;c.beginPath();c.moveTo(x,0);c.lineTo(x,h);c.stroke()}}
@@ -171,7 +267,7 @@ function drawGrid() {
  });
  if(oldFocus){const wanted=Array.from(el.querySelectorAll('button')).find(b=>b.dataset.step===oldFocus);if(wanted)wanted.focus()}
 }
-function projectState(){return {schema:2,core:core.getState(),tracks:tracks.map(row=>row.slice()),voices:voices.map(v=>({...v})),drumLevel};}
+function projectState(){return {schema:2,core:core.getState(),tracks:tracks.map(row=>row.slice()),voices:voices.map(v=>({...v})),drumLevel,performance:window.AcidLabV3?.getState?.()};}
 function applyState(s){
  if(!s || s.schema!==2 || !s.core || !Array.isArray(s.tracks)||s.tracks.length!==4)throw new Error('This project is not a valid Acid Lab 2 project');
  ignoreChanges=true;
@@ -180,7 +276,7 @@ function applyState(s){
   tracks=s.tracks.map(t=>Array.from({length:16},(_,i)=>Boolean(t[i])));
   for(let i=0;i<2;i++){const v=s.voices&&s.voices[i]||{};voices[i].wave=['square','sawtooth','triangle'].includes(v.wave)?v.wave:(i?'square':'sawtooth');voices[i].tone=clamp(v.tone??100,30,175);voices[i].level=clamp(v.level??100,0,150)}
   drumLevel=clamp(s.drumLevel??65,0,100);
-  syncMixer();drawGrid();
+  syncMixer();drawGrid();if(s.performance)window.AcidLabV3?.loadState?.(s.performance);
  } finally {ignoreChanges=false}
  scheduleSave();
 }
@@ -221,7 +317,7 @@ function ensureDrums(ctx,dest){if(drumBus)return;drumBus=ctx.createGain();drumBu
 function highlight(i){$('v2Grid').querySelectorAll('.v2-step').forEach((btn,n)=>btn.classList.toggle('active',n%16===i))}
 window.AcidLabV2={
  getVoice(r){const v=voices[r];return {wave:v.wave,tone:v.tone/100,level:v.level/100}},
- scheduleDrums(time,tick,ctx,dest){ensureDrums(ctx,dest);const i=tick%16;for(let r=0;r<4;r++)if(tracks[r][i])fireDrum(r,time,ctx);setTimeout(()=>{if(core.isPlaying())highlight(i);else highlight(-1)},Math.max(0,(time-ctx.currentTime)*1000))},
+ scheduleDrums(time,tick,ctx,dest){ensureDrums(ctx,dest);const i=tick%16;for(let r=0;r<4;r++){const v3=window.AcidLabV3;const on=v3?.isDrumOn?.(r,i,tick,tracks[r][i])??tracks[r][i];if(on){fireDrum(r,time,ctx);if(v3?.drumRatchet?.(r,i,tick))fireDrum(r,time+60/Number($('bpm').value)/8,ctx)}}setTimeout(()=>{if(core.isPlaying())highlight(i);else highlight(-1)},Math.max(0,(time-ctx.currentTime)*1000))},
  onPreset(p){presetDrums(p)}
 };
 presetDrums(core.getState().preset);
@@ -230,5 +326,124 @@ const auto=readJSON(keys.auto,null);if(auto){try{applyState(auto);message('Recov
 window.addEventListener('pagehide',()=>{clearTimeout(saveTimer);try{localStorage.setItem(keys.auto,JSON.stringify(projectState()))}catch{}});
 })();
 
+</script>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);
+const core=window.AcidLab;
+if(!core||!window.AcidLabV2){console.error('Evolution engine requires Acid Lab 2');return}
+const presetMap={circuit:'twin',fracture:'breaks',afterglow:'minimal',deep:'minimal'};
+const scenes={
+ circuit:{x:24,y:28,swing:12,drift:1,pad:23,space:16},
+ fracture:{x:82,y:40,swing:38,drift:21,pad:28,space:33},
+ afterglow:{x:37,y:79,swing:15,drift:29,pad:82,space:76},
+ deep:{x:19,y:96,swing:7,drift:18,pad:95,space:90}
+};
+let state={scene:'circuit',enabled:true,journey:true,freeze:false,x:24,y:28,swing:12,drift:1,pad:23,space:16,seed:248312};
+const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
+const rand=(tick,salt)=>{let x=(Math.imul((tick|0)+1,1664525)^Math.imul(state.seed|0,1013904223)^Math.imul(salt+2,2246822519))>>>0;x=Math.imul(x^(x>>>16),2246822519);x=Math.imul(x^(x>>>13),3266489917);return ((x^(x>>>16))>>>0)/4294967296};
+const xNow=tick=>state.freeze?(tick%16):tick;
+const section=tick=>Math.floor(tick/64)%4;
+const sectionName=['Intro','Build','Breakdown','Release'];
+const timeStrength=tick=>!state.enabled?1:!state.journey?1:[.67,1.05,.35,1.13][section(tick)];
+const intensity=tick=>state.enabled?state.x/100*timeStrength(tick):0;
+const configState=()=>({...state});
+function show(){
+ $('evoCursor').style.left=state.x+'%';$('evoCursor').style.top=(100-state.y)+'%';
+ $('evoXYReadout').textContent=state.x+' / '+state.y;
+ $('evoPad').setAttribute('aria-valuenow',state.x);
+ $('evoPad').setAttribute('aria-valuetext',state.x+' percent variation, '+state.y+' percent atmosphere');
+ document.querySelectorAll('.evo-scene').forEach(b=>b.classList.toggle('selected',b.dataset.scene===state.scene));
+ for(const [id,v] of [['Swing',state.swing],['Drift',state.drift],['PadLevel',state.pad],['Space',state.space]]){$('evo'+id).value=v;$('evo'+id+'Val').textContent=v+'%'}
+ for(const [id,v] of [['evoEnabled',state.enabled],['evoJourney',state.journey],['evoFreeze',state.freeze]]){$(id).setAttribute('aria-pressed',String(v))}
+ $('evoEnabled').textContent=state.enabled?'◉ Evolution ON':'◯ Evolution OFF';$('evoJourney').textContent=state.journey?'◈ Journey ON':'◇ Journey OFF';$('evoFreeze').textContent=state.freeze?'❄ Variation frozen':'❄ Freeze variation';
+ $('evoSceneStatus').textContent=({'circuit':'Circuit','fracture':'Fracture','afterglow':'Afterglow','deep':'Deep Space'})[state.scene]+(state.enabled?' · Evolving':' · Fixed loop');
+ syncEffects();
+}
+function setXY(x,y){state.x=clamp(Math.round(x),0,100);state.y=clamp(Math.round(y),0,100);show()}
+function setScene(name,changeBase){if(!scenes[name])return;state={...state,...scenes[name],scene:name,freeze:false};show();if(changeBase){document.querySelector('.preset[data-preset="'+presetMap[name]+'"]').click();const levels={circuit:[100,100,65],fracture:[95,95,84],afterglow:[67,48,44],deep:[42,30,26]}[name];for(let i=0;i<2;i++){$('v2Level'+i).value=levels[i];$('v2Level'+i).dispatchEvent(new Event('input',{bubbles:true}))}$('v2DrumLevel').value=levels[2];$('v2DrumLevel').dispatchEvent(new Event('input',{bubbles:true}));$('evoStatus').textContent='Scene: '+name+' · Tempo, layers, and patterns are ready to evolve.'}}
+function load(s){if(!s||typeof s!=='object')return;const scene=String(s.scene||'circuit');if(!scenes[scene])return;state={...state,scene};for(const prop of ['x','y','swing','drift','pad','space'])if(Number.isFinite(Number(s[prop])))state[prop]=clamp(Math.round(Number(s[prop])),0,prop==='swing'?70:100);
+ for(const prop of ['enabled','journey','freeze'])if(typeof s[prop]==='boolean')state[prop]=s[prop];if(Number.isSafeInteger(s.seed))state.seed=s.seed;show()}
+function setPadFromPointer(e){const b=$('evoPad').getBoundingClientRect();setXY(100*(e.clientX-b.left)/b.width,100*(1-(e.clientY-b.top)/b.height))}
+const hit=$('evoPad');hit.addEventListener('pointerdown',e=>{e.preventDefault();hit.setPointerCapture(e.pointerId);setPadFromPointer(e)});hit.addEventListener('pointermove',e=>{if(e.buttons||e.pressure)setPadFromPointer(e)});
+hit.addEventListener('keydown',e=>{const amt=e.shiftKey?10:3;const change={ArrowLeft:[-amt,0],ArrowRight:[amt,0],ArrowUp:[0,amt],ArrowDown:[0,-amt]}[e.key];if(change){e.preventDefault();setXY(state.x+change[0],state.y+change[1])}});
+document.querySelectorAll('.evo-scene').forEach(b=>b.onclick=()=>setScene(b.dataset.scene,true));
+$('evoEnabled').onclick=()=>{state.enabled=!state.enabled;show()};$('evoJourney').onclick=()=>{state.journey=!state.journey;show()};$('evoFreeze').onclick=()=>{state.freeze=!state.freeze;show()};
+$('evoPhrase').onclick=()=>{state.seed=(Math.random()*0x7fffffff)|0;state.freeze=false;show();$('evoStatus').textContent='New musical variation generated. Your underlying notes remain unchanged.'};
+for(const [prop,id] of [['swing','Swing'],['drift','Drift'],['pad','PadLevel'],['space','Space']])$('evo'+id).oninput=e=>{state[prop]=Number(e.target.value);show()};
+let taps=[];$('evoTap').onclick=()=>{const now=performance.now();taps=taps.filter(t=>now-t<4000);taps.push(now);if(taps.length>=3){const intervals=taps.slice(1).map((t,i)=>t-taps[i]).filter(dt=>dt>240&&dt<1350);if(intervals.length){const avg=intervals.reduce((a,b)=>a+b,0)/intervals.length;const target=clamp(Math.round(60000/avg),55,200);$('bpm').value=target;$('bpm').dispatchEvent(new Event('input',{bubbles:true}));$('evoStatus').textContent='Tap tempo: '+target+' BPM'}}};
+function wow(tick,ring){return state.enabled?((Math.sin(tick*.029+ring*.8)*.64+Math.sin(tick*.008+ring)*.36)*state.y*.11):0}
+function toneAt(tick,ring){if(!state.enabled)return 1;const slow=Math.sin(tick*.031+ring*1.3)*.23+Math.sin(tick*.007+ring*2)*.24;return clamp(1+slow*(.2+state.y/100)*.95,.55,1.55)}
+function note(st,ring,tick){if(!state.enabled)return st;
+ const t=xNow(tick),mut=intensity(tick),s={...st};
+ const onChance=mut*.19;
+ if(rand(t,30+ring)<onChance) s.on=!s.on;
+ if(s.on && rand(t,44+ring)<mut*.25){const shift=[-5,-2,2,5,7,0][Math.floor(rand(t,51+ring)*6)];s.note=clamp(s.note+shift,24,84)}
+ if(rand(t,60+ring)<mut*.14) s.accent=!s.accent;
+ if(rand(t,74+ring)<mut*.09)s.slide=true;
+ if(state.journey&&section(tick)===2&&ring===1&&rand(t,83)<.65) s.on=false;
+ return s;
+}
+function drum(r,idx,tick,isOn){if(!state.enabled)return isOn;const mut=intensity(tick),t=xNow(tick);
+ if(state.journey&&section(tick)===2&&r!==0&&rand(t,100+r)<.68)return false;
+ if(state.journey&&section(tick)===0&&r===3&&rand(t,103)<.65)return false;
+ if(r===0&&idx%4===0&&state.journey&&section(tick)!==2)return isOn;
+ if(rand(t,140+r)<mut*(r===2?.26:.13))return !isOn;
+ if(tick%64>=60 && rand(t,150+r)<mut*.37 && (r===1||r===2))return true;
+ return isOn;
+}
+function drumRatchet(r,idx,tick){return state.enabled&&state.x>45&&(r===2||r===1)&&rand(xNow(tick),160+r)<intensity(tick)*.17;}
+function swingOffset(tick,bpm){return (tick%2&&state.enabled)?(60/bpm/4)*(state.swing/100)*.48:0}
+function tempoScale(tick){if(!state.enabled)return 1;const drift=state.drift/100*.04;return 1/(1+drift*Math.sin(tick/67))}
+let audio=null,bus=null,send=null,delay=null,feedback=null,wet=null,noiseSrc=null,hissGain=null;
+function init(ctx,compressor,distortion){if(bus||!ctx)return;audio=ctx;
+ bus=ctx.createGain();bus.gain.value=0;bus.connect(compressor);
+ send=ctx.createGain();send.gain.value=1;delay=ctx.createDelay(1.5);delay.delayTime.value=.36;feedback=ctx.createGain();feedback.gain.value=.24;wet=ctx.createGain();wet.gain.value=0;
+ distortion.connect(send);bus.connect(send);send.connect(delay);delay.connect(wet);wet.connect(compressor);
+ delay.connect(feedback);feedback.connect(delay);
+ const n=ctx.createBuffer(1,Math.round(ctx.sampleRate*2),ctx.sampleRate),d=n.getChannelData(0);let lp=0;for(let i=0;i<d.length;i++){lp=.92*lp+.08*(Math.random()*2-1);d[i]=lp}
+ noiseSrc=ctx.createBufferSource();noiseSrc.buffer=n;noiseSrc.loop=true;const hi=ctx.createBiquadFilter();hi.type='highpass';hi.frequency.value=900;
+ hissGain=ctx.createGain();hissGain.gain.value=0;noiseSrc.connect(hi);hi.connect(hissGain);hissGain.connect(bus);noiseSrc.start();syncEffects();
+}
+function syncEffects(){if(!audio)return;const t=audio.currentTime;const amount=state.enabled?1:0;wet.gain.setTargetAtTime(amount*(state.space/100)*.22,t,.08);feedback.gain.setTargetAtTime(clamp(.12+state.space/100*.3,0,.44),t,.12);
+ const bpm=Number($('bpm').value)||125;delay.delayTime.setTargetAtTime(clamp(60/bpm*.75,.19,.8),t,.07);
+ if(core.isPlaying())bus.gain.setTargetAtTime(amount*.63,t,.09);
+ hissGain.gain.setTargetAtTime(core.isPlaying()?amount*state.y/100*.014:0,t,.2);
+}
+function transport(on){if(!audio)return;const t=audio.currentTime;bus.gain.setTargetAtTime(on&&state.enabled?.63:0,t,.04);wet.gain.setTargetAtTime(on&&state.enabled?state.space/100*.22:0,t,.07);hissGain.gain.setTargetAtTime(on&&state.enabled?state.y/100*.014:0,t,.16)}
+const harmony={
+ circuit:[[36,39,43],[34,38,41],[31,35,38],[36,39,43]],
+ fracture:[[38,41,45],[33,36,40],[36,38,43],[31,35,38]],
+ afterglow:[[36,39,43,46],[41,44,48],[34,38,41,45],[43,46,50]],
+ deep:[[36,41,43,48],[33,36,40,45],[31,36,38,43],[34,38,41,46]]
+};
+let noteCap=0;
+function padChord(tick,at,ctx){if(!state.enabled||state.pad===0||state.y===0||!bus)return;
+ if(tick%64!==0)return;
+ const sceneHarmony=harmony[state.scene]||harmony.circuit;
+ const chord=sceneHarmony[(Math.floor(tick/64))%4];
+ const secs=(60/(Number($('bpm').value)||120))*16, hold=clamp(secs*.94,3,14),energy=state.pad/100*(.15+state.y/100*.85)*(state.journey?([.55,.88,1,1.03][section(tick)]):1);
+ if(energy<.018)return;
+ for(let n=0;n<chord.length;n++){
+  const midi=chord[n]+(n?12:0);
+  const osc=ctx.createOscillator(),osc2=ctx.createOscillator(),fil=ctx.createBiquadFilter(),g=ctx.createGain(),p=ctx.createStereoPanner?.()||null;
+  osc.type='triangle';osc2.type='sine';const freq=440*Math.pow(2,(midi-69)/12);osc.frequency.setValueAtTime(freq,at);osc2.frequency.setValueAtTime(freq,at);osc2.detune.value=(n%2?5:-6);osc.detune.setValueAtTime(Math.sin(tick*.043+n)*state.y/13,at);osc.detune.linearRampToValueAtTime(Math.cos((tick+64)*.043+n)*state.y/13,at+hold);
+  fil.type='lowpass';fil.frequency.setValueAtTime(560+state.y*17,at);fil.Q.value=.5;
+  const peak=(.22/Math.sqrt(chord.length))*energy;
+  g.gain.setValueAtTime(.00001,at);g.gain.linearRampToValueAtTime(peak,at+Math.min(1.25,hold*.25));g.gain.setValueAtTime(peak,at+hold*.69);g.gain.linearRampToValueAtTime(.00001,at+hold);
+  const o2=ctx.createGain();o2.gain.value=.48;osc.connect(fil);osc2.connect(o2);o2.connect(fil);fil.connect(g);
+  if(p){p.pan.value=(n/(Math.max(1,chord.length-1))-.5)*.65;g.connect(p);p.connect(bus)}else g.connect(bus);
+  osc.start(at);osc2.start(at);osc.stop(at+hold+.03);osc2.stop(at+hold+.03);
+  osc.onended=()=>{for(const node of [osc,osc2,fil,g,o2,p])try{node?.disconnect()}catch(_){}};
+ }
+ noteCap++;
+}
+function tick(t,at,ctx){if(!state.enabled)return;
+ if(t%64===0){padChord(t,at,ctx);const name=sectionName[section(t)];$('evoStatus').textContent='Journey: '+(state.journey?name:'Free play')+' · Bar '+(Math.floor(t/16)+1)+' · Evolving '+(state.freeze?'a frozen variation':'the groove');}
+}
+window.AcidLabV3={getState:configState,loadState:load,transformNote:note,isDrumOn:drum,drumRatchet,toneAt,wow,swingOffset,tempoScale,initAudio:init,onTransport:transport,onTick:tick};
+const auto=(()=>{try{return JSON.parse(localStorage.getItem('acid-lab-v2-autosave'))}catch{return null}})();if(auto?.performance)load(auto.performance);else show();
+$('bpm').addEventListener('input',syncEffects);
+})();
 </script>
 </body></html>
